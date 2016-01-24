@@ -1,0 +1,66 @@
+﻿@model PagedList.IPagedList<BoxingWebApp.ViewModels.BoxersListItem>
+
+@{
+    ViewBag.Title = "Index";
+
+    if (!AuthorizeExtensions.IsAuthenticated())
+    {
+        Response.RedirectToRoute("~/Logins/Login?error=unauthorized");
+    }
+}
+<h2 class="gridHeader">@BoxingResources.Boxers</h2>
+
+
+<table class="gridTable">
+    <tr>
+        <th colspan="2">
+            @BoxingResources.BoxersInfo
+        </th>
+    </tr>
+    <tr class="commandRow">
+        <td colspan="2">
+            @Html.ActionLink(BoxingResources.AddNew, "Create", null, new { @class = "boxingButton" })
+        </td>
+    </tr>
+    <tr>
+        <td class="headerColumn">
+            @BoxingResources.Boxer
+        </td>
+        <td class="headerColumn">
+            @BoxingResources.Actions
+        </td>
+    </tr>
+    @*@if (Model.Items != null)*@
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td class="displayColumn">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td class="actionsColumn">
+                    @Html.ActionLink(BoxingResources.Edit, "Edit", new { id = item.Id })
+                    @Html.ActionLink(BoxingResources.Delete, "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td class="noObjectsRow" colspan="2">
+                @BoxingResources.NoBoxersEntered
+            </td>
+        </tr>
+    }
+    <tr class="pagerTr">
+        <td class="pagerTd" colspan="2">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        </td>
+        @*<td >
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        </td>*@
+    </tr>
+</table>
+

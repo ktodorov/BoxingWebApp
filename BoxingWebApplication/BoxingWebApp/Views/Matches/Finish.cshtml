@@ -1,0 +1,63 @@
+﻿@using Boxing.Contracts.Resources
+
+@model BoxingWebApp.ViewModels.MatchesListItem
+@{
+    if (!AuthorizeExtensions.IsAuthenticated())
+    {
+        Response.RedirectToRoute("~/Logins/Login?error=unauthorized");
+    }
+
+    if (!AuthorizeExtensions.CurrentUserIsAdmin())
+    {
+        Response.RedirectToRoute("~/Index");
+    }
+
+    var boxers = new List<BoxingWebApp.ViewModels.BoxersListItem>();
+
+    var item = new BoxingWebApp.ViewModels.BoxersListItem();
+    item.Id = Model.Boxer1Id;
+    item.Name = Model.Boxer1.Name;
+    boxers.Add(item);
+
+    item = new BoxingWebApp.ViewModels.BoxersListItem();
+    item.Id = Model.Boxer2Id;
+    item.Name = Model.Boxer2.Name;
+    boxers.Add(item);
+
+    var boxersList = new SelectList(boxers, "Id", "Name", 1);
+}
+<h2 class="gridHeader">@ViewBag.Title</h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, htmlAttributes: new { @class = "boxingForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4 class="pageSubHeader">
+            @(Model.Boxer1 != null ? Model.Boxer1.Name : string.Empty) vs @(Model.Boxer2 != null ? Model.Boxer2.Name : string.Empty), @Model.Address
+        </h4>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.WinnerId, htmlAttributes: new { @class = "control-label col-md-2 boxingLabel formLabel" })
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(
+                model => model.WinnerId,
+                boxersList,
+                "-- Select --",
+                new { @class = "boxingDropDownList" }
+           )
+            @Html.ValidationMessageFor(x => x.WinnerId, "", new { @class = "text-danger formValidationMessage" })
+        </div>
+
+        <div class="formActionsDiv">
+            <input type="submit" value="Save" class="boxingButton" id="save-button" />
+            @Html.ActionLink(BoxingResources.Cancel, "Index", "Matches", null, new { @class = "boxingButton" })
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

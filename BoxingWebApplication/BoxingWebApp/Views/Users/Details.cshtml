@@ -1,0 +1,38 @@
+﻿@model BoxingWebApp.ViewModels.UsersDetailsViewModel
+@{
+    if (!AuthorizeExtensions.IsAuthenticated())
+    {
+        Response.RedirectToRoute("~/Logins/Login?error=unauthorized");
+    }
+
+    if (Model.Id != AuthorizeExtensions.GetCurrentUser().Id)
+    {
+        Response.RedirectToRoute("~/Index");
+    }
+}
+<h2 class="gridHeader">User</h2>
+
+<div class="objectDetails">
+    <h4 class="pageSubHeader">Current user</b></h4>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Username, new { @class = "col-md-2 control-label boxingLabel" })
+        <span class="displaySpan">@Html.DisplayTextFor(m => m.Username)</span>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.FullName, new { @class = "col-md-2 control-label boxingLabel" })
+        <span class="displaySpan">@Html.DisplayTextFor(m => m.FullName)</span>
+</div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Rating, new { @class = "col-md-2 control-label boxingLabel" })
+        <span class="displaySpan">@Html.DisplayTextFor(m => m.Rating)</span>
+</div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.IsAdmin, new { @class = "col-md-2 control-label boxingLabel" })
+        <span class="displaySpan">@(Model.IsAdmin ? "Yes" : "No")</span>
+</div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

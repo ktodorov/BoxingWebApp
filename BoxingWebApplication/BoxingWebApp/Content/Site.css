@@ -1,0 +1,447 @@
+﻿html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    margin-bottom: 80px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.container {
+    max-width: 100%;
+    padding: 0;
+}
+
+.boxingNavigation {
+    background: #FFF;
+    border-bottom: 1px solid #250;
+    min-height: 0px;
+    width: 100%;
+}
+
+    .boxingNavigation a {
+        color: #454 !important;
+        padding: 13px !important;
+    }
+
+        .boxingNavigation a:hover {
+            color: white !important;
+            background: #585 !important;
+        }
+
+.titleSpan a {
+    color: #280 !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: "Segoe UI";
+    margin: 0 30px 0 0 !important;
+    font-size: 20px;
+}
+
+    .titleSpan a:hover {
+        background: none !important;
+        color: #2B0 !important;
+    }
+
+
+.boxingButton {
+    background: #163;
+    border: 1px solid #264;
+    padding: 7px 15px;
+    color: white;
+    margin-top: 10px;
+    border-radius: 0px;
+}
+
+a.boxingButton {
+    padding: 9px 15px;
+}
+
+.boxingButton:hover {
+    background: #052;
+    border: 1px solid #264;
+    text-decoration: none;
+    color: white;
+}
+
+.boxingButton:visited {
+    text-decoration: none;
+    color: white;
+}
+
+.boxingSubmitButton {
+    width: 100%;
+    max-width: 100%;
+    height: 40px;
+}
+
+.boxingPanel {
+    padding: 30px;
+    color: white;
+    background: gray;
+    margin: 0;
+}
+
+    .boxingPanel:hover {
+        cursor: pointer;
+        opacity: 0.95;
+    }
+
+    .boxingPanel h2 {
+        font-size: 35px;
+    }
+
+    .boxingPanel p {
+        font-size: 15px;
+        text-align: right;
+        padding-top: 50px;
+        width: 70%;
+        float: right;
+        font-style: italic;
+    }
+
+footer {
+    background: #222 !important;
+    border-top: 3px solid #888;
+    padding: 15px 100px !important;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    color: #555;
+    height: 80px;
+}
+
+h2.pageHeader {
+    font-size: 30px;
+    font-weight: bolder;
+    font-family: "Segoe UI";
+    color: #252;
+    margin: 0 0 30px 15px;
+}
+
+h2.gridHeader {
+    background: #252;
+    padding: 20px 40px 20px 40px;
+    margin: 30px 0 10px 0;
+    color: white;
+    font-size: 30px;
+    font-family: "Segoe UI";
+    font-weight: bolder;
+    text-transform: uppercase;
+}
+
+h4.pageSubHeader {
+    font-size: 20px;
+    font-family: "Segoe UI Light";
+    font-weight: normal;
+    margin: 20px 0;
+    padding-left: 40px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ADB;
+}
+
+.gridTable {
+    width: 99%;
+    margin: 30px auto;
+    border: 1px solid #252;
+}
+
+    .gridTable th {
+        padding: 15px 10px;
+        border-bottom: 1px solid #252;
+        font-size: 17px;
+    }
+
+    .gridTable td {
+        padding: 10px;
+    }
+
+    .gridTable tr.commandRow td {
+        padding: 17px 0;
+        border-bottom: 1px solid #252;
+    }
+
+        .gridTable tr.commandRow td a {
+            padding: 12px;
+        }
+
+    .gridTable tr.displayRow:hover {
+        background-color: #F6F6F6;
+    }
+
+    .gridTable tr td.headerColumn {
+        border: 1px solid #252;
+        border-top: 3px solid #252;
+        background: #BDB;
+        color: black;
+        font-weight: bold;
+    }
+
+    .gridTable tr td.displayColumn {
+        border: 1px solid #252;
+    }
+
+    .gridTable tr:last-child {
+        border-bottom: 3px solid #252;
+    }
+
+    .gridTable tr td.actionsColumn {
+        border-bottom: 1px solid #252;
+        width: 10%;
+        text-align: center;
+    }
+
+        .gridTable tr td.actionsColumn a {
+            color: #252;
+            margin: 0 15px;
+        }
+
+            .gridTable tr td.actionsColumn a:hover {
+                text-decoration: underline;
+            }
+
+    .gridTable tr td.noObjectsRow {
+        padding: 10px;
+    }
+
+.boxingLabel {
+    margin: 0;
+    padding: 0;
+    padding-right: 15px;
+    font-family: "Segoe UI";
+    font-weight: normal;
+    width: 100%;
+    text-align: left !important;
+    float: left;
+    line-height: 25px;
+}
+
+.submitPanel {
+    margin: 0 auto;
+    width: 150px;
+}
+
+.boxingInput {
+    border-radius: 0px;
+    width: 100%;
+    max-width: 100%;
+    box-shadow: white 0 0 0;
+    height: 40px;
+}
+
+    .boxingInput:hover {
+        border: 1px solid #4A7;
+    }
+
+    .boxingInput:focus {
+        border: 1px solid #052;
+        box-shadow: white 0 0 0;
+    }
+
+.formInput {
+    width: 75%;
+    height: 35px;
+}
+
+.formLabel {
+    float: left;
+    width: 20%;
+    text-align: right !important;
+}
+
+.formValidationMessage {
+    /*margin: 10px 0 10px 30px;*/
+}
+
+.boxingCheckboxLabel {
+    float: none;
+    width: auto;
+}
+
+.boxingHyperlink {
+    color: #252;
+}
+
+    .boxingHyperlink:hover {
+        color: #030;
+        text-decoration: underline;
+    }
+
+.centeredPanel {
+    margin: 30px auto;
+    width: 30%;
+    padding: 30px 40px;
+    padding-bottom: 0px;
+    border: 1px solid #252;
+}
+
+    .centeredPanel h2 {
+        padding-left: 0;
+        margin-left: 0;
+    }
+
+    .centeredPanel h4 {
+        padding-left: 20px;
+    }
+
+
+.boxingForm {
+    width: 100%;
+    max-width: 500px;
+    margin: 15px auto;
+    padding-bottom: 20px;
+}
+
+.formActionsDiv {
+    border-top: 1px solid #ADB;
+    text-align: center;
+}
+
+    .formActionsDiv .boxingButton {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+
+.boxingDropDownList {
+    border-radius: 0px;
+    width: 100%;
+    max-width: 100%;
+    box-shadow: white 0 0 0;
+    border: 1px solid #CCC;
+    height: 40px;
+    width: 75%;
+    height: 35px;
+}
+
+    .boxingDropDownList:hover {
+        border: 1px solid #4A7;
+    }
+
+.pagination-container {
+    float: left;
+    background: #252;
+    border: 1px solid #252;
+    border-bottom: 0px;
+    margin-top: 5px;
+}
+
+ul.pagination {
+    margin: 0px;
+    border-radius: 0px;
+}
+
+    ul.pagination li a {
+        color: white;
+        border: 0px;
+        padding: 5px 15px;
+        margin: 0px 0 -7px 0;
+        background: none;
+    }
+
+    ul.pagination li.active a {
+        background: #696;
+        border: 0px;
+        color: #252;
+        font-weight: bold;
+        border-right: 1px solid #252;
+        border-left: 1px solid #252;
+    }
+
+        ul.pagination li.active a:hover,
+        ul.pagination li a:hover {
+            background: #696;
+            color: #252;
+            /*border: 0px;*/
+            border-color: #252;
+            border-top: 0px;
+            border-bottom: 0px;
+        }
+
+    ul.pagination > li:first-child > a,
+    ul.pagination > li:last-child > a {
+        border-radius: 0px;
+    }
+
+    ul.pagination > li:first-child > a {
+        border-left: 0px;
+    }
+
+    ul.pagination > li:last-child > a {
+        border-right: 0px;
+    }
+
+tr.pagerTr {
+    background: #daf1da;
+}
+
+td.pagerTd {
+    padding: 0 10px;
+}
+
+div.objectDetails {
+    width: 40%;
+    min-width: 300px;
+    margin: 0 auto;
+}
+
+span.displaySpan {
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+.chatContainer {
+    width: 40%;
+    min-width: 500px;
+    margin: 0px auto;
+}
+
+    .chatContainer input {
+        display: inline-block;
+        line-height: normal;
+        height: 35px;
+    }
+
+.chatDiscussionUl {
+    height: 500px;
+    height: 60vh;
+    overflow-y: auto;
+    border: 1px solid #252;
+    padding: 10px 20px;
+}
+
+.chatDiscussionUl li {
+    border: 1px solid #252;
+    width: 300px;
+    padding: 10px;
+    margin: 5px 0;
+    background: #585;
+    color: white;
+    border-radius: 100px 0 0 100px;
+}
+
+.chatDiscussionUl li strong {
+    display: block;
+}

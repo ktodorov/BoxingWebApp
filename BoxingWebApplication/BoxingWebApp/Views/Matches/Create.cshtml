@@ -1,0 +1,100 @@
+﻿@using Boxing.Contracts.Resources
+
+@model BoxingWebApp.ViewModels.MatchesDetailsViewModel
+@{
+    if (!AuthorizeExtensions.IsAuthenticated())
+    {
+        Response.RedirectToRoute("~/Logins/Login?error=unauthorized");
+    }
+
+    var boxers1 = ViewData["Boxers"] as SelectList;
+    var boxers2 = ViewData["Boxers"] as SelectList;
+
+    if (ViewData["Boxers1"] != null)
+    {
+        boxers1 = ViewData["Boxers1"] as SelectList;
+    }
+
+    if (ViewData["Boxers2"] != null)
+    {
+        boxers2 = ViewData["Boxers2"] as SelectList;
+    }
+}
+<h2 class="gridHeader">@ViewBag.Title</h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, htmlAttributes: new { @class = "boxingForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4 class="pageSubHeader">@BoxingResources.AddNew - @BoxingResources.Match</h4>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Boxer1, htmlAttributes: new { @class = "control-label col-md-2 boxingLabel formLabel" })
+            @if (boxers1 != null)
+            {
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(
+                x => x.Boxer1Id,
+                boxers1,
+                "-- Select --",
+                new { @class = "boxingDropDownList" }
+
+           )
+            }
+            else
+            {
+                <text>You must first add boxers</text>
+            }
+            @Html.ValidationMessageFor(x => x.Boxer1Id, "", new { @class = "text-danger formValidationMessage" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Boxer2, htmlAttributes: new { @class = "control-label col-md-2 boxingLabel formLabel" })
+            @if (boxers2 != null)
+            {
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(
+                x => x.Boxer2Id,
+                boxers2,
+                "-- Select --",
+                new { @class = "boxingDropDownList" }
+           )
+            }
+            else
+            {
+                <text>You must first add boxers</text>
+            }
+            @Html.ValidationMessageFor(x => x.Boxer2Id, "", new { @class = "text-danger formValidationMessage" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2 boxingLabel formLabel" })
+            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control boxingInput formInput" } })
+            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger formValidationMessage" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Time, htmlAttributes: new { @class = "control-label col-md-2 boxingLabel formLabel" })
+            @Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control boxingInput formInput" } })
+            @Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger formValidationMessage" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 boxingLabel formLabel" })
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control boxingInput formInput" } })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger formValidationMessage" })
+        </div>
+
+        <div class="formActionsDiv">
+            <input type="submit" value="Save" class="boxingButton" id="save-button" />
+            @Html.ActionLink(BoxingResources.Cancel, "Index", null, new { @class = "boxingButton" })
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

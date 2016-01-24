@@ -1,0 +1,57 @@
+﻿@using Boxing.Contracts.Resources
+
+@model BoxingWebApp.ViewModels.UsersListViewModel
+@{
+    ViewBag.Title = "Index";
+
+    if (!AuthorizeExtensions.IsAuthenticated())
+    {
+        Response.RedirectToRoute("~/Logins/Login?error=unauthorized");
+    }
+}
+<h2 class="gridHeader">@BoxingResources.Users</h2>
+
+
+<table class="gridTable">
+    @*<tr>
+        <th colspan="5">
+            @BoxingResources.MatchesInfo
+        </th>
+    </tr>*@
+    @*<tr class="commandRow">
+        <td colspan="5">
+            @Html.ActionLink(BoxingResources.AddNew, "Create", null, new { @class = "boxingButton" })
+        </td>
+    </tr>*@
+    <tr>
+        <td class="headerColumn">
+            @BoxingResources.Username
+        </td>
+        <td class="headerColumn">
+            @BoxingResources.FullName
+        </td>
+    </tr>
+    @if (Model.Items != null)
+    {
+        //var matches = Model.Items.OrderBy(m => m.Time);
+        foreach (var item in Model.Items)
+        {
+            <tr class="displayRow">
+                <td class="displayColumn">
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td class="displayColumn">
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td class="noObjectsRow" colspan="2">
+                @BoxingResources.NoUsersEntered
+            </td>
+        </tr>
+    }
+</table>

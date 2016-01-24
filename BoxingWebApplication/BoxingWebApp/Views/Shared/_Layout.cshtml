@@ -1,0 +1,57 @@
+﻿@using Boxing.Contracts.Resources
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - @BoxingResources.ProjectTitle</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top boxingNavigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="titleSpan">@Html.ActionLink(BoxingResources.ProjectTitle, "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })</span>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink(BoxingResources.Home, "Index", "Home")</li>
+                    <li>@Html.ActionLink(BoxingResources.About, "About", "Home")</li>
+                    <li>@Html.ActionLink("Chat", "Chat", "Home")</li>
+                    <li>@Html.ActionLink("Users", "Index", "Users")</li>
+                    <li>@Html.ActionLink(BoxingResources.Matches, "Index", "Matches")</li>
+                    <li>@Html.ActionLink(BoxingResources.Boxers, "Index", "Boxers")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <div class="page-wrap">
+            @RenderBody()
+        </div>
+        <footer>
+            <table width="80%" style="margin: 0 auto;">
+                <tr>
+                    <td style="text-align: center;">&copy;@BoxingResources.ProjectTitle, @BoxingResources.AuthorName, @DateTime.Now.Year</td>
+                    <td style="text-align: center;">@BoxingResources.UniversityName</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">@BoxingResources.SubjectName</td>
+                    <td style="text-align: center;">@BoxingResources.FacultyName</td>
+                </tr>
+            </table>
+        </footer>
+    </div>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

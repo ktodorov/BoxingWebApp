@@ -1,0 +1,150 @@
+﻿@using Boxing.Contracts.Resources
+
+@model BoxingWebApp.ViewModels.MatchesListViewModel
+@{
+    if (!AuthorizeExtensions.IsAuthenticated())
+    {
+        Response.RedirectToRoute("~/Logins/Login?error=unauthorized");
+    }
+
+
+    var userIsAdmin = AuthorizeExtensions.CurrentUserIsAdmin();
+
+    var predictions = ViewData["Predictions"] as List<BoxingWebApp.ViewModels.PredictionsListItem>;
+    if (predictions == null)
+    {
+        predictions = new List<BoxingWebApp.ViewModels.PredictionsListItem>();
+    }
+
+    ViewBag.Title = "Index";
+}
+<h2 class="gridHeader">@BoxingResources.Matches</h2>
+
+
+<table class="gridTable">
+    <tr>
+        <th colspan="5">
+            @BoxingResources.MatchesInfo
+        </th>
+    </tr>
+    @if (userIsAdmin)
+    {
+        <tr class="commandRow">
+            <td colspan="5">
+                @Html.ActionLink(BoxingResources.AddNew, "Create", null, new { @class = "boxingButton" })
+            </td>
+        </tr>
+    }
+    <tr>
+        <td class="headerColumn">
+            @BoxingResources.Match
+        </td>
+        <td class="headerColumn">
+            @BoxingResources.Address
+        </td>
+        <td class="headerColumn">
+            @BoxingResources.Time
+        </td>
+        <td class="headerColumn">
+            @BoxingResources.Description
+        </td>
+        @if (!userIsAdmin)
+        {
+            <td class="headerColumn">
+                Predict
+            </td>
+        }
+        else
+        {
+            <td class="headerColumn">
+                @BoxingResources.Actions
+            </td>
+        }
+    </tr>
+    @if (Model.Items != null)
+    {
+        var matches = Model.Items.OrderBy(m => m.Time);
+        foreach (var item in matches)
+        {
+            <tr class="displayRow">
+                <td class="displayColumn">
+                    <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Boxer1.Name) </span> vs <span style="font-weight:bold;">@Html.DisplayFor(modelItem => item.Boxer2.Name)</span>
+                </td>
+                <td class="displayColumn">
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td class="displayColumn">
+                    @item.Time.ToString("dd/MM/yyyy, HH:mm")
+                </td>
+                <td class="displayColumn">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                @if (!userIsAdmin)
+                {
+                    var prediction = predictions.FirstOrDefault(p => p.MatchId == item.Id);
+                    var text = "Predict";
+                    if (prediction != null)
+                    {
+                        var boxer = item.Boxer1;
+                        if (prediction.PredictedBoxerId == item.Boxer2Id)
+                        {
+                            boxer = item.Boxer2;
+                        }
+                        text = "Predicted: " + boxer.Name;
+                    }
+
+                    string winner = null;
+                    if (item.WinnerId != null)
+                    {
+                        if (item.WinnerId == item.Boxer1Id)
+                        {
+                            winner = item.Boxer1.Name;
+                        }
+                        else
+                        {
+                            winner = item.Boxer2.Name;
+                        }
+                    }
+                    <td class="displayColumn">
+                        @if (winner == null)
+                        {
+                        @Html.ActionLink(text, "Predict",
+                                             controllerName: "Predictions",
+                                             routeValues: new { parentId = item.Id },
+                                             htmlAttributes: null)
+                        }
+                        else
+                        {
+                            <text>@text<br/>Winner: @winner</text>
+                        }
+                    </td>
+                }
+                else
+                {
+                <td class="actionsColumn">
+                    @Html.ActionLink("Finish", "Finish", new
+                   {
+                       id = item.Id
+                   })<br />
+                    @Html.ActionLink(BoxingResources.Edit, "Edit", new
+                   {
+                       id = item.Id
+                   })<br />
+                    @Html.ActionLink(BoxingResources.Delete, "Delete", new
+                   {
+                       id = item.Id
+                   })
+                </td>
+                }
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td class="noObjectsRow" colspan="2">
+                @BoxingResources.NoMatchesEntered
+            </td>
+        </tr>
+    }
+</table>
