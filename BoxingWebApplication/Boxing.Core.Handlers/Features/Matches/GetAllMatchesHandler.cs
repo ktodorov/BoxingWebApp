@@ -23,10 +23,19 @@ namespace Boxing.Core.Handlers.Features.Matches
 
         public async Task<IEnumerable<MatchDto>> HandleAsync(GetAllMatchesRequest request)
         {
-            return (await _db.Matches
+            var dbSet = _db.Matches
                 .Include(e => e.Boxer1)
                 .Include(e => e.Boxer2)
-                .Include(e => e.Winner)
+                .Include(e => e.Winner);
+
+            if (!string.IsNullOrEmpty(request.Search))
+            {
+                dbSet = dbSet.Where(m => m.Boxer1.Name.Contains(request.Search) ||
+                                         m.Boxer2.Name.Contains(request.Search) ||
+                                         m.Address.Contains(request.Search));
+            }
+
+            return (await dbSet
                 .OrderBy(e => e.Time)
                 .Skip(request.Skip)
                 .Take(request.Take)

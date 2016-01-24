@@ -22,23 +22,30 @@ namespace BoxingWebApp.Controllers
         }
 
         // GET: Matches
-        public ActionResult Index([FromUri] int skip = 0, [FromUri] int take = 10)
+        public ActionResult Index([FromUri] int skip = 0, [FromUri] int take = 10, [FromUri] string search = null)
         {
             MatchesListViewModel model = new MatchesListViewModel();
 
-            model.Items = webClient.ExecuteGet<IEnumerable<MatchDto>>(new Models.ApiRequest() { EndPoint = $"matches?skip={skip}&take={take}" })
-                ?.Select(q => new MatchesListItem()
-                {
-                    Id = q.Id,
-                    Boxer1Id = q.Boxer1Id,
-                    Boxer2Id = q.Boxer2Id,
-                    Boxer1 = new BoxersListItem(q.Boxer1.Name),
-                    Boxer2 = new BoxersListItem(q.Boxer2.Name),
-                    Address = q.Address,
-                    Time = q.Time,
-                    Description = q.Description,
-                    WinnerId = q.WinnerId
-                })?.ToList();
+            var searchQueryParam = string.Empty;
+            if (!string.IsNullOrEmpty(search))
+            {
+                searchQueryParam = $"&search={search}";
+                ViewData["SearchString"] = search;
+            }
+
+            model.Items = webClient.ExecuteGet<IEnumerable<MatchDto>>(new Models.ApiRequest() { EndPoint = $"matches?skip={skip}&take={take}{searchQueryParam}" })
+            ?.Select(q => new MatchesListItem()
+            {
+                Id = q.Id,
+                Boxer1Id = q.Boxer1Id,
+                Boxer2Id = q.Boxer2Id,
+                Boxer1 = new BoxersListItem(q.Boxer1.Name),
+                Boxer2 = new BoxersListItem(q.Boxer2.Name),
+                Address = q.Address,
+                Time = q.Time,
+                Description = q.Description,
+                WinnerId = q.WinnerId
+            })?.ToList();
 
             var currentUserId = AuthorizeExtensions.GetCurrentUser().Id;
 
@@ -52,7 +59,6 @@ namespace BoxingWebApp.Controllers
                 })?.Where(p => p.UserId == currentUserId)?.ToList();
 
             ViewData["Predictions"] = predictions;
-
             ViewData["Page"] = (skip / take) + 1;
             ViewData["PageSize"] = take;
             return View(model);

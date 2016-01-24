@@ -7,7 +7,6 @@
         Response.RedirectToRoute("~/Logins/Login?error=unauthorized");
     }
 
-
     var userIsAdmin = AuthorizeExtensions.CurrentUserIsAdmin();
 
     var predictions = ViewData["Predictions"] as List<BoxingWebApp.ViewModels.PredictionsListItem>;
@@ -17,6 +16,9 @@
     }
 
     ViewBag.Title = "Index";
+
+    var page = (int?)ViewData["Page"] != null ? ((int?)ViewData["Page"] - 1) : 0;
+    var pageSize = (int?)ViewData["PageSize"] ?? 10;
 }
 <h2 class="gridHeader">@BoxingResources.Matches</h2>
 
@@ -27,14 +29,11 @@
             @BoxingResources.MatchesInfo
         </th>
     </tr>
-    @if (userIsAdmin)
-    {
-        <tr class="commandRow">
-            <td colspan="5">
-                @Html.ActionLink(BoxingResources.AddNew, "Create", null, new { @class = "boxingButton" })
-            </td>
-        </tr>
-    }
+    <tr class="commandRow">
+        <td colspan="5">
+            @Html.MainToolbar(searchable: true, searchString: ViewData["SearchString"] as string)
+        </td>
+    </tr>
     <tr>
         <td class="headerColumn">
             @BoxingResources.Match
@@ -62,10 +61,10 @@
         }
     </tr>
     @if (Model.Items != null)
-    {
-        var matches = Model.Items.OrderBy(m => m.Time);
-        foreach (var item in matches)
-        {
+            {
+                var matches = Model.Items.OrderBy(m => m.Time);
+                foreach (var item in matches)
+                {
             <tr class="displayRow">
                 <td class="displayColumn">
                     <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Boxer1.Name) </span> vs <span style="font-weight:bold;">@Html.DisplayFor(modelItem => item.Boxer2.Name)</span>
@@ -108,33 +107,33 @@
                     <td class="displayColumn">
                         @if (winner == null)
                         {
-                        @Html.ActionLink(text, "Predict",
+                            @Html.ActionLink(text, "Predict",
                                              controllerName: "Predictions",
                                              routeValues: new { parentId = item.Id },
                                              htmlAttributes: null)
                         }
                         else
                         {
-                            <text>@text<br/>Winner: @winner</text>
+                            <text>@text<br />Winner: @winner</text>
                         }
                     </td>
                 }
                 else
                 {
-                <td class="actionsColumn">
-                    @Html.ActionLink("Finish", "Finish", new
+                    <td class="actionsColumn">
+                        @Html.ActionLink("Finish", "Finish", new
                    {
                        id = item.Id
                    })<br />
-                    @Html.ActionLink(BoxingResources.Edit, "Edit", new
+                        @Html.ActionLink(BoxingResources.Edit, "Edit", new
                    {
                        id = item.Id
                    })<br />
-                    @Html.ActionLink(BoxingResources.Delete, "Delete", new
+                        @Html.ActionLink(BoxingResources.Delete, "Delete", new
                    {
                        id = item.Id
                    })
-                </td>
+                    </td>
                 }
             </tr>
         }
@@ -149,7 +148,7 @@
     }
     <tr class="pagerTr">
         <td class="pagerTd" colspan="2">
-            @Html.Pager("matches", (int?)ViewData["Page"], (int?)ViewData["PageSize"])
+            @Html.Pager("matches", (int?)ViewData["Page"], (int?)ViewData["PageSize"], search: (string)ViewData["SearchString"])
         </td>
     </tr>
 </table>

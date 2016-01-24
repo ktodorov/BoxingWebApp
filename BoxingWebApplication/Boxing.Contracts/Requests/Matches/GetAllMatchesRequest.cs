@@ -12,5 +12,7 @@ namespace Boxing.Contracts.Requests.Matches
         public int Skip { get; set; }
 
         public int Take { get; set; }
+
+        public string Search { get; set; }
     }
 }

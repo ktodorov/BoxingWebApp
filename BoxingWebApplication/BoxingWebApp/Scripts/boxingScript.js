@@ -16,3 +16,23 @@ $(function () {
         window.location.replace(newUrl);
     });
 });
+
+$(function () {
+    $(".searchButton").click(function () {
+        debugger;
+        var searchString = $(this).closest('tr').find('.searchInput').val();
+        var newUrl = updateQueryStringParameter(window.location.href, 'search', searchString);
+        window.location.replace(newUrl);
+    });
+});
+
+$(function () {
+    $(".searchInput").keyup(function (event) {
+        if (event.keyCode == 13) {
+            var searchButton = $(this).closest('tr').find('.searchButton');
+            if (searchButton) {
+                searchButton.click();
+            }
+        }
+    });
+});
