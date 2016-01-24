@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Boxing.Contracts.Dto;
+using Boxing.Contracts.Helpers.Users;
 using Boxing.Contracts.Requests.Users;
 using Boxing.Core.Handlers.Interfaces;
 using Boxing.Core.Sql;
@@ -21,8 +22,26 @@ namespace Boxing.Core.Handlers.Features.Users
 
         public async Task<IEnumerable<UserDto>> HandleAsync(GetAllUsersRequest request)
         {
-            return (await _db.Users
-                .OrderBy(e => e.Id)
+            var dbSet = _db.Users;
+            var query = dbSet.OrderBy(e => e.Id);
+
+            switch (request.Sort)
+            {
+                case UserSortingOptions.FullNameAscending:
+                    query = dbSet.OrderBy(e => e.FullName);
+                    break;
+                case UserSortingOptions.FullNameDescending:
+                    query = dbSet.OrderByDescending(e => e.FullName);
+                    break;
+                case UserSortingOptions.RatingAscending:
+                    query = dbSet.OrderBy(e => e.Rating);
+                    break;
+                case UserSortingOptions.RatingDescending:
+                    query = dbSet.OrderByDescending(e => e.Rating);
+                    break;
+            }
+
+            return (await query
                 .Skip(request.Skip)
                 .Take(request.Take)
                 .ToListAsync()

@@ -1,6 +1,7 @@
 ﻿using Boxing.Contracts;
 using Boxing.Contracts.Dto;
 using Boxing.Contracts.Extensions;
+using Boxing.Contracts.Helpers.Users;
 using BoxingWebApp.Extensions;
 using BoxingWebApp.Services;
 using BoxingWebApp.ViewModels;
@@ -24,15 +25,42 @@ namespace BoxingWebApp.Controllers
         }
 
         // GET: Users
-        public ActionResult Index([FromUri] int skip = 0, [FromUri] int take = 10)
+        public ActionResult Index([FromUri] int skip = 0, [FromUri] int take = 10, [FromUri] string sort = "fullName", [FromUri] string order = "asc")
         {
+            var sorting = UserSortingOptions.FullNameAscending;
+
+            if (sort == "fullName")
+            {
+                if (order == "asc")
+                {
+                    sorting = UserSortingOptions.FullNameAscending;
+                }
+                else
+                {
+                    sorting = UserSortingOptions.FullNameDescending;
+                }
+            }
+            else
+            {
+                if (order == "asc")
+                {
+                    sorting = UserSortingOptions.RatingAscending;
+                }
+                else
+                {
+                    sorting = UserSortingOptions.RatingDescending;
+                }
+            }
+
             UsersListViewModel model = new UsersListViewModel();
 
-            model.Items = webClient.ExecuteGet<IEnumerable<UserDto>>(new Models.ApiRequest() { EndPoint = $"users?skip={skip}&take={take}" })
-                ?.Select(q => new UsersListItem() { Id = q.Id, FullName = q.FullName, Username = q.Username })?.ToList();
+            model.Items = webClient.ExecuteGet<IEnumerable<UserDto>>(new Models.ApiRequest() { EndPoint = $"users?skip={skip}&take={take}&sort={sorting}" })
+                ?.Select(q => new UsersListItem() { Id = q.Id, FullName = q.FullName, Username = q.Username, Rating = q.Rating })?.ToList();
 
             ViewData["Page"] = (skip / take) + 1;
             ViewData["PageSize"] = take;
+            ViewData["Sort"] = sort;
+            ViewData["Order"] = order;
             return View(model);
         }
 

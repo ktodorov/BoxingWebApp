@@ -27,7 +27,7 @@ namespace Boxing.Core.Handlers.Features.Matches
                 .Include(e => e.Boxer1)
                 .Include(e => e.Boxer2)
                 .Include(e => e.Winner)
-                .OrderBy(e => e.Id)
+                .OrderBy(e => e.Time)
                 .Skip(request.Skip)
                 .Take(request.Take)
                 .ToListAsync()

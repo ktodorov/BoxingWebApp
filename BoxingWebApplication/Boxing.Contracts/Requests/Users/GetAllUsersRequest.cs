@@ -1,4 +1,5 @@
 ﻿using Boxing.Contracts.Dto;
+using Boxing.Contracts.Helpers.Users;
 using System.Collections.Generic;
 
 namespace Boxing.Contracts.Requests.Users
@@ -8,5 +9,7 @@ namespace Boxing.Contracts.Requests.Users
         public int Skip { get; set; }
 
         public int Take { get; set; }
+
+        public UserSortingOptions Sort { get; set; }
     }
 }

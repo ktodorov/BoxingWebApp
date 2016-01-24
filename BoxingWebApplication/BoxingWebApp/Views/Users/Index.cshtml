@@ -8,32 +8,39 @@
     {
         Response.RedirectToRoute("~/Logins/Login?error=unauthorized");
     }
+
+    var sort = ViewData["Sort"] as string;
+    var sortOrder = ViewData["Order"] as string;
+    var page = (int?)ViewData["Page"] != null ? ((int?)ViewData["Page"] - 1) : 0;
+    var pageSize = (int?)ViewData["PageSize"] ?? 10;
 }
 <h2 class="gridHeader">@BoxingResources.Users</h2>
 
 
 <table class="gridTable">
-    @*<tr>
-        <th colspan="5">
-            @BoxingResources.MatchesInfo
-        </th>
-    </tr>*@
-    @*<tr class="commandRow">
-        <td colspan="5">
-            @Html.ActionLink(BoxingResources.AddNew, "Create", null, new { @class = "boxingButton" })
-        </td>
-    </tr>*@
     <tr>
         <td class="headerColumn">
             @BoxingResources.Username
         </td>
         <td class="headerColumn">
-            @BoxingResources.FullName
+            @Html.ActionLink(BoxingResources.FullName + (sort == "fullname" ? (sortOrder == "asc" ? " \u2193" : " \u2191") : string.Empty),
+                             "Index",
+                             new { sort = "fullname", order = (sort == "fullname" && sortOrder == "asc" ? "desc" : "asc") })
+        </td>
+        <td class="headerColumn">
+            @Html.ActionLink("Rating" + (sort == "rating" ? (sortOrder == "asc" ? " \u2193" : " \u2191") : string.Empty),
+                              "Index",
+                              new
+                              {
+                                  sort = "rating",
+                                  order = (sort == "rating" && sortOrder == "asc" ? "desc" : "asc"),
+                                  skip = (page * pageSize),
+                                  take = pageSize
+                              })
         </td>
     </tr>
     @if (Model.Items != null)
     {
-        //var matches = Model.Items.OrderBy(m => m.Time);
         foreach (var item in Model.Items)
         {
             <tr class="displayRow">
@@ -42,6 +49,9 @@
                 </td>
                 <td class="displayColumn">
                     @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td class="displayColumn">
+                    @Html.DisplayFor(modelItem => item.Rating)
                 </td>
             </tr>
         }
@@ -56,7 +66,7 @@
     }
     <tr class="pagerTr">
         <td class="pagerTd" colspan="2">
-            @Html.Pager("users", (int?)ViewData["Page"], (int?)ViewData["PageSize"])
+            @Html.Pager("users", (int?)ViewData["Page"], (int?)ViewData["PageSize"], sort, sortOrder)
         </td>
     </tr>
 </table>

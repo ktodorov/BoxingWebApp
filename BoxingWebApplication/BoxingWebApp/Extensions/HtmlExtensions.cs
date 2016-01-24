@@ -7,7 +7,7 @@ namespace BoxingWebApp.Extensions
 {
     public static class HtmlExtensions
     {
-        public static IHtmlString Pager(this HtmlHelper helper, string model, int? page, int? pageSize)
+        public static IHtmlString Pager(this HtmlHelper helper, string model, int? page, int? pageSize, string sort = null, string order = null)
         {
             var webClient = new WebClientService(new ConfigurationService());
             var count = webClient.ExecuteGet<int>(new Models.ApiRequest() { EndPoint = $"count?model={model}" });
@@ -32,7 +32,28 @@ namespace BoxingWebApp.Extensions
                 else
                 {
                     htmlText += "<li>";
-                    htmlText += helper.ActionLink((i + 1).ToString(), "Index", new { skip = (pageSize ?? 0) * i, take = (pageSize ?? 0) }).ToString();
+
+                    object routeValues;
+                    if (!string.IsNullOrEmpty(sort) && !string.IsNullOrEmpty(order))
+                    {
+                        routeValues = new
+                        {
+                            skip = (pageSize ?? 0) * i,
+                            take = (pageSize ?? 0),
+                            sort = sort,
+                            order = order
+                        };
+                    }
+                    else
+                    {
+                        routeValues = new
+                        {
+                            skip = (pageSize ?? 0) * i,
+                            take = (pageSize ?? 0)
+                        };
+                    }
+
+                    htmlText += helper.ActionLink((i + 1).ToString(), "Index", routeValues).ToString();
                 }
                 htmlText += "</li>";
             }

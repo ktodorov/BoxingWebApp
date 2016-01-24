@@ -88,6 +88,7 @@
     <Compile Include="Extensions\AuthorizationExtensions.cs" />
     <Compile Include="Extensions\CommonExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Helpers\Users\UserEnums.cs" />
     <Compile Include="IRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\Boxers\CreateBoxerRequest.cs" />
