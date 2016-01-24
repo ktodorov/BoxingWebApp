@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<BoxingWebApp.ViewModels.BoxersListItem>
+﻿@model BoxingWebApp.ViewModels.BoxersListViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -31,9 +31,9 @@
         </td>
     </tr>
     @*@if (Model.Items != null)*@
-    @if (Model != null)
+    @if (Model.Items != null)
     {
-        foreach (var item in Model)
+        foreach (var item in Model.Items)
         {
             <tr>
                 <td class="displayColumn">
@@ -56,11 +56,9 @@
     }
     <tr class="pagerTr">
         <td class="pagerTd" colspan="2">
-            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+            @Html.Pager("boxers", (int?)ViewData["Page"], (int?)ViewData["PageSize"])
+
         </td>
-        @*<td >
-            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-        </td>*@
     </tr>
 </table>
 

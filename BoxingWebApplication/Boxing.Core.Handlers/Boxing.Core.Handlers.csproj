@@ -108,6 +108,7 @@
     <Compile Include="CrossCutting\LoggingHandlerDecorator.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Exceptions\BadRequestException.cs" />
+    <Compile Include="Features\Count\GetCountHandler.cs" />
     <Compile Include="Features\Logins\LogUserLoginHandler.cs" />
     <Compile Include="Features\Logins\DeleteLoginHandler.cs" />
     <Compile Include="Features\Logins\GetAllLoginsHandler.cs" />

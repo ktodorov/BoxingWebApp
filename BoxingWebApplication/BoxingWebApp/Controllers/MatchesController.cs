@@ -22,11 +22,11 @@ namespace BoxingWebApp.Controllers
         }
 
         // GET: Matches
-        public ActionResult Index()
+        public ActionResult Index([FromUri] int skip = 0, [FromUri] int take = 10)
         {
             MatchesListViewModel model = new MatchesListViewModel();
 
-            model.Items = webClient.ExecuteGet<IEnumerable<MatchDto>>(new Models.ApiRequest() { EndPoint = "matches?skip=0&take=10" })
+            model.Items = webClient.ExecuteGet<IEnumerable<MatchDto>>(new Models.ApiRequest() { EndPoint = $"matches?skip={skip}&take={take}" })
                 ?.Select(q => new MatchesListItem()
                 {
                     Id = q.Id,
@@ -53,6 +53,8 @@ namespace BoxingWebApp.Controllers
 
             ViewData["Predictions"] = predictions;
 
+            ViewData["Page"] = (skip / take) + 1;
+            ViewData["PageSize"] = take;
             return View(model);
         }
 

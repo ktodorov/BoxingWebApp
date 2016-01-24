@@ -177,6 +177,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BoxersController.cs" />
+    <Compile Include="Controllers\CountController.cs" />
     <Compile Include="Controllers\PredictionsController.cs" />
     <Compile Include="Controllers\MatchesController.cs" />
     <Compile Include="Controllers\LoginsController.cs" />

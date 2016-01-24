@@ -340,65 +340,67 @@ h4.pageSubHeader {
         border: 1px solid #4A7;
     }
 
-.pagination-container {
+.pageDescriptionDiv {
     float: left;
-    background: #252;
-    border: 1px solid #252;
-    border-bottom: 0px;
-    margin-top: 5px;
+    margin: 0 10px 0 0;
+    line-height: 30px;
+    font-weight: bold;
+    color: #252;
 }
 
-ul.pagination {
+.pageSizeDropDown {
+    width: 130px;
+    height: 30px;
+    margin: 0 5px;
+}
+
+ul.boxingPager {
     margin: 0px;
-    border-radius: 0px;
+    list-style: none;
+    float: left;
+    padding: 5px 0px;
+    background: #252;
+    margin-bottom: -10px;
 }
 
-    ul.pagination li a {
-        color: white;
-        border: 0px;
-        padding: 5px 15px;
-        margin: 0px 0 -7px 0;
-        background: none;
+    ul.boxingPager li {
+        display: inline;
     }
 
-    ul.pagination li.active a {
-        background: #696;
-        border: 0px;
-        color: #252;
-        font-weight: bold;
-        border-right: 1px solid #252;
-        border-left: 1px solid #252;
-    }
-
-        ul.pagination li.active a:hover,
-        ul.pagination li a:hover {
-            background: #696;
-            color: #252;
-            /*border: 0px;*/
-            border-color: #252;
-            border-top: 0px;
-            border-bottom: 0px;
+        ul.boxingPager li a {
+            color: gray;
+            border: 0px;
+            background: none;
+            padding: 7px 13px;
+            border-left: 1px solid black;
+            border-right: 1px solid black;
         }
 
-    ul.pagination > li:first-child > a,
-    ul.pagination > li:last-child > a {
-        border-radius: 0px;
-    }
+        ul.boxingPager li.active a {
+            background: #696;
+            color: #252;
+            font-weight: bold;
+            border: 0px;
+        }
 
-    ul.pagination > li:first-child > a {
+            ul.boxingPager li.active a:hover,
+            ul.boxingPager li a:hover {
+                background: #696;
+                color: #252;
+                border-color: #252;
+                text-decoration: none;
+            }
+
+    ul.boxingPager > li:first-child > a {
         border-left: 0px;
     }
 
-    ul.pagination > li:last-child > a {
+    ul.boxingPager > li:last-child > a {
         border-right: 0px;
     }
 
-tr.pagerTr {
+tr.boxingPagerTr {
     background: #daf1da;
-}
-
-td.pagerTd {
-    padding: 0 10px;
 }
 
 div.objectDetails {
@@ -432,16 +434,16 @@ span.displaySpan {
     padding: 10px 20px;
 }
 
-.chatDiscussionUl li {
-    border: 1px solid #252;
-    width: 300px;
-    padding: 10px;
-    margin: 5px 0;
-    background: #585;
-    color: white;
-    border-radius: 100px 0 0 100px;
-}
+    .chatDiscussionUl li {
+        border: 1px solid #252;
+        width: 300px;
+        padding: 10px;
+        margin: 5px 0;
+        background: #585;
+        color: white;
+        border-radius: 100px 0 0 100px;
+    }
 
-.chatDiscussionUl li strong {
-    display: block;
-}
+        .chatDiscussionUl li strong {
+            display: block;
+        }

@@ -54,4 +54,9 @@
             </td>
         </tr>
     }
+    <tr class="pagerTr">
+        <td class="pagerTd" colspan="2">
+            @Html.Pager("users", (int?)ViewData["Page"], (int?)ViewData["PageSize"])
+        </td>
+    </tr>
 </table>

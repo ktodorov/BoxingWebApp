@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 
 namespace BoxingWebApp.Controllers
@@ -23,13 +24,15 @@ namespace BoxingWebApp.Controllers
         }
 
         // GET: Users
-        public ActionResult Index()
+        public ActionResult Index([FromUri] int skip = 0, [FromUri] int take = 10)
         {
             UsersListViewModel model = new UsersListViewModel();
 
-            model.Items = webClient.ExecuteGet<IEnumerable<UserDto>>(new Models.ApiRequest() { EndPoint = "users?skip=0&take=10" })
+            model.Items = webClient.ExecuteGet<IEnumerable<UserDto>>(new Models.ApiRequest() { EndPoint = $"users?skip={skip}&take={take}" })
                 ?.Select(q => new UsersListItem() { Id = q.Id, FullName = q.FullName, Username = q.Username })?.ToList();
 
+            ViewData["Page"] = (skip / take) + 1;
+            ViewData["PageSize"] = take;
             return View(model);
         }
 
@@ -58,7 +61,7 @@ namespace BoxingWebApp.Controllers
             return View();
         }
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult Register(UsersDetailsViewModel model)
         {
             if (ModelState.IsValid)

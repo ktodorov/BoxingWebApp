@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using PagedList;
+using System.Web.Http;
 
 namespace BoxingWebApp.Controllers
 {
@@ -21,17 +22,19 @@ namespace BoxingWebApp.Controllers
         }
 
         // GET: Boxers
-        public ActionResult Index(int? page)
+        public ActionResult Index([FromUri] int skip = 0, [FromUri] int take = 10)
         {
             BoxersListViewModel model = new BoxersListViewModel();
 
-            var boxers = webClient.ExecuteGet<IEnumerable<BoxerDto>>(new Models.ApiRequest() { EndPoint = "boxers?skip=0&take=10" })
+            model.Items = webClient.ExecuteGet<IEnumerable<BoxerDto>>(new Models.ApiRequest() { EndPoint = $"boxers?skip={skip}&take={take}" })
                 ?.Select(q => new BoxersListItem() { Id = q.Id, Name = q.Name })?.ToList();
 
-            int pageSize = 1;
-            int pageNumber = (page ?? 1);
+            //int pageSize = 1;
+            //int pageNumber = (page ?? 1);
 
-            return View(boxers.ToPagedList(pageNumber, pageSize));
+            ViewData["Page"] = (skip / take) + 1;
+            ViewData["PageSize"] = take;
+            return View(model);//.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Boxers/Details/5
@@ -51,7 +54,7 @@ namespace BoxingWebApp.Controllers
         }
 
         // POST: Boxers/Create
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult Create(BoxersDetailsViewModel model)
         {
             try
@@ -88,7 +91,7 @@ namespace BoxingWebApp.Controllers
         }
 
         // POST: Boxers/Edit/5
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult Edit(int id, BoxersDetailsViewModel model)
         {
             try
@@ -127,7 +130,7 @@ namespace BoxingWebApp.Controllers
         // GET: Boxers/Delete/5
         public ActionResult Delete(int id)
         {
-            webClient.ExecuteDelete(new Models.ApiRequest() { EndPoint = string.Format("boxers/{0}", id)});
+            webClient.ExecuteDelete(new Models.ApiRequest() { EndPoint = string.Format("boxers/{0}", id) });
 
             return RedirectToAction("Index");
         }

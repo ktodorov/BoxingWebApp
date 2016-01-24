@@ -95,6 +95,7 @@
     <Compile Include="Requests\Boxers\GetAllBoxersRequest.cs" />
     <Compile Include="Requests\Boxers\GetBoxerRequest.cs" />
     <Compile Include="Requests\Boxers\UpdateBoxerRequest.cs" />
+    <Compile Include="Requests\Count\GetCountRequest.cs" />
     <Compile Include="Requests\Logins\LogUserLoginRequest.cs" />
     <Compile Include="Requests\Logins\CheckLoginIsAuthenticatedRequest.cs" />
     <Compile Include="Requests\Matches\FinishMatchRequest.cs" />
