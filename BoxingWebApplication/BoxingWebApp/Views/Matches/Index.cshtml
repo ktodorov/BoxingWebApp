@@ -4,7 +4,7 @@
 @{
     if (!AuthorizeExtensions.IsAuthenticated())
     {
-        Response.RedirectToRoute("~/Logins/Login?error=unauthorized");
+        throw new UnauthorizedAccessException();
     }
 
     var userIsAdmin = AuthorizeExtensions.CurrentUserIsAdmin();

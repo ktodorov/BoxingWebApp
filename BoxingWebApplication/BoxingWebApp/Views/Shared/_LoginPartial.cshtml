@@ -1,17 +1,20 @@
 ﻿@using Boxing.Contracts.Resources
 @using BoxingWebApp.Extensions
 
+
 @if (AuthorizeExtensions.IsAuthenticated())
 {
-    using (Html.BeginForm(BoxingResources.Logout, "Users", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
+
+        var currentUser = AuthorizeExtensions.GetCurrentUser();
+        using (Html.BeginForm(BoxingResources.Logout, "Users", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+        {
         @Html.AntiForgeryToken()
 
         <ul class="nav navbar-nav navbar-right">
             <li>
             <li>
                 @Html.ActionLink("Hello, " + Session["UserName"], "Details", "Users",
-                             routeValues: new { id = AuthorizeExtensions.GetCurrentUser().Id }, 
+                             routeValues: new { id = currentUser != null ? currentUser.Id : 0 }, 
                              htmlAttributes: null)
             </li>
             <li style="margin-right: 20px;">@Html.ActionLink(BoxingResources.Logout, "Logout", "Logins")</li>

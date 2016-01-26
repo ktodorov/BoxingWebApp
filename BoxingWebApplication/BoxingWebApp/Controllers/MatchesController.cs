@@ -47,7 +47,8 @@ namespace BoxingWebApp.Controllers
                 WinnerId = q.WinnerId
             })?.ToList();
 
-            var currentUserId = AuthorizeExtensions.GetCurrentUser().Id;
+            var currentUser = AuthorizeExtensions.GetCurrentUser();
+            var currentUserId = currentUser != null ? currentUser.Id : 0;
 
             var predictions = webClient.ExecuteGet<IEnumerable<PredictionDto>>(new Models.ApiRequest() { EndPoint = "predictions?skip=0&take=10" })
                 ?.Select(q => new PredictionsListItem()

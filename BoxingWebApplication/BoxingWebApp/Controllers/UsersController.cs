@@ -65,19 +65,22 @@ namespace BoxingWebApp.Controllers
         }
 
         // GET: Users/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details([FromUri] int id)
         {
             var user = webClient.ExecuteGet<UserDto>(new Models.ApiRequest() { EndPoint = string.Format("users/{0}", id) });
 
             var model = new UsersDetailsViewModel();
 
-            model.Id = user.Id;
-            model.FullName = user.FullName;
-            model.Username = user.Username;
-            model.IsAdmin= user.IsAdmin;
-            model.Rating= user.Rating;
+            if (user != null)
+            {
+                model.Id = user.Id;
+                model.FullName = user.FullName;
+                model.Username = user.Username;
+                model.IsAdmin = user.IsAdmin;
+                model.Rating = user.Rating;
 
-            ViewBag.Title = model.Username;
+                ViewBag.Title = model.Username;
+            }
 
             return View(model);
         }

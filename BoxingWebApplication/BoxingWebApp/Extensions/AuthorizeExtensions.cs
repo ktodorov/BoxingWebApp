@@ -92,22 +92,21 @@ namespace BoxingWebApp.Extensions
         public static UserDto GetCurrentUser()
         {
             var authToken = string.Empty;
-            if (AuthTokenAvailable())
-            {
-                authToken = GetAuthToken();
-            }
-            else if (AdminTokenAvailable())
+            if (AdminTokenAvailable())
             {
                 authToken = GetAdminToken();
+            }
+            else if (AuthTokenAvailable())
+            {
+                authToken = GetAuthToken();
             }
             else
             {
                 return null;
             }
 
-
             var webClient = new WebClientService(new ConfigurationService());
-            var logins = webClient.ExecuteGet<IEnumerable<LoginDto>>(new Models.ApiRequest() { EndPoint = "logins?skip=0&take=10" })
+            var logins = webClient.ExecuteGet<IEnumerable<LoginDto>>(new Models.ApiRequest() { EndPoint = "logins?skip=0&take=100" })
                 ?.Select(q => new LoginsListItem() { Id = q.Id, AuthToken = q.AuthToken, ExpirationDate = q.ExpirationDate, UserId = q.UserId })?.ToList();
 
             var currentLogin = logins?.FirstOrDefault(l => l.AuthToken == authToken);
@@ -117,7 +116,7 @@ namespace BoxingWebApp.Extensions
                 return null;
             }
 
-            var users = webClient.ExecuteGet<IEnumerable<UserDto>>(new Models.ApiRequest() { EndPoint = "users?skip=0&take=10" })?.ToList();
+            var users = webClient.ExecuteGet<IEnumerable<UserDto>>(new Models.ApiRequest() { EndPoint = "users?skip=0&take=100" })?.ToList();
 
             var currentUser = users.FirstOrDefault(u => u.Id == currentLogin.UserId);
 

@@ -340,6 +340,7 @@ h4.pageSubHeader {
     padding: 30px 40px;
     padding-bottom: 0px;
     border: 1px solid #252;
+    min-width: 400px;
 }
 
     .centeredPanel h2 {

@@ -2,18 +2,19 @@
 @{
     if (!AuthorizeExtensions.IsAuthenticated())
     {
-        Response.RedirectToRoute("~/Logins/Login?error=unauthorized");
+        throw new UnauthorizedAccessException();
     }
 
-    if (Model.Id != AuthorizeExtensions.GetCurrentUser().Id)
-    {
-        Response.RedirectToRoute("~/Index");
-    }
+    //var currentUser = AuthorizeExtensions.GetCurrentUser();
+    //if (Model.Id != (currentUser != null ? currentUser.Id : 0))
+    //{
+    //    Response.RedirectToRoute("~/Index");
+    //}
 }
 <h2 class="gridHeader">User</h2>
 
 <div class="objectDetails">
-    <h4 class="pageSubHeader">Current user</b></h4>
+    <h4 class="pageSubHeader">Current user</h4>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Username, new { @class = "col-md-2 control-label boxingLabel" })
@@ -22,15 +23,15 @@
     <div class="form-group">
         @Html.LabelFor(m => m.FullName, new { @class = "col-md-2 control-label boxingLabel" })
         <span class="displaySpan">@Html.DisplayTextFor(m => m.FullName)</span>
-</div>
+    </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Rating, new { @class = "col-md-2 control-label boxingLabel" })
         <span class="displaySpan">@Html.DisplayTextFor(m => m.Rating)</span>
-</div>
+    </div>
     <div class="form-group">
         @Html.LabelFor(m => m.IsAdmin, new { @class = "col-md-2 control-label boxingLabel" })
-        <span class="displaySpan">@(Model.IsAdmin ? "Yes" : "No")</span>
-</div>
+        <span class="displaySpan">@((Model != null && Model.IsAdmin) ? "Yes" : "No")</span>
+    </div>
 </div>
 
 @section Scripts {
