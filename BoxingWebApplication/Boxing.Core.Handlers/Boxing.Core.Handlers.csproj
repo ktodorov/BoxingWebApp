@@ -115,6 +115,7 @@
     <Compile Include="Features\Logins\GetLoginHandler.cs" />
     <Compile Include="Features\Logins\CheckLoginIsAuthenticatedHandler.cs" />
     <Compile Include="Features\Logins\UpdateLoginHandler.cs" />
+    <Compile Include="Features\Matches\CancelMatchHandler.cs" />
     <Compile Include="Features\Matches\FinishMatchHandler.cs" />
     <Compile Include="Features\Predictions\CreatePredictionHandler.cs" />
     <Compile Include="Features\Predictions\DeletePredictionHandler.cs" />

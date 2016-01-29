@@ -68,6 +68,18 @@ namespace Boxing.Api.Handlers.Controllers
             await _mediator.ExecuteAsync(request).ConfigureAwait(false);
         }
 
+
+        [HttpPut]
+        [Route("api/matches/{id}/cancel/")]
+        public async Task Cancel(int id)
+        {
+            var request = new CancelMatchRequest
+            {
+                Id = id
+            };
+            await _mediator.ExecuteAsync(request).ConfigureAwait(false);
+        }
+
         [HttpDelete]
         public async Task Delete([FromUri] DeleteMatchRequest request)
         {

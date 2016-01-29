@@ -99,6 +99,7 @@
     <Compile Include="Requests\Count\GetCountRequest.cs" />
     <Compile Include="Requests\Logins\LogUserLoginRequest.cs" />
     <Compile Include="Requests\Logins\CheckLoginIsAuthenticatedRequest.cs" />
+    <Compile Include="Requests\Matches\CancelMatchRequest.cs" />
     <Compile Include="Requests\Matches\FinishMatchRequest.cs" />
     <Compile Include="Requests\Predictions\CreatePredictionRequest.cs" />
     <Compile Include="Requests\Predictions\DeletePredictionRequest.cs" />

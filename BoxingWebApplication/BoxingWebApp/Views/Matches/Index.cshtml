@@ -61,10 +61,25 @@
         }
     </tr>
     @if (Model.Items != null)
+    {
+        var matches = Model.Items.OrderBy(m => m.Time);
+        foreach (var item in matches)
+        {
+
+
+            string winner = null;
+            if (item.WinnerId != null)
             {
-                var matches = Model.Items.OrderBy(m => m.Time);
-                foreach (var item in matches)
+                if (item.WinnerId == item.Boxer1Id)
                 {
+                    winner = item.Boxer1.Name;
+                }
+                else
+                {
+                    winner = item.Boxer2.Name;
+                }
+            }
+
             <tr class="displayRow">
                 <td class="displayColumn">
                     <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Boxer1.Name) </span> vs <span style="font-weight:bold;">@Html.DisplayFor(modelItem => item.Boxer2.Name)</span>
@@ -92,18 +107,6 @@
                         text = "Predicted: " + boxer.Name;
                     }
 
-                    string winner = null;
-                    if (item.WinnerId != null)
-                    {
-                        if (item.WinnerId == item.Boxer1Id)
-                        {
-                            winner = item.Boxer1.Name;
-                        }
-                        else
-                        {
-                            winner = item.Boxer2.Name;
-                        }
-                    }
                     <td class="displayColumn">
                         @if (winner == null)
                         {
@@ -121,18 +124,33 @@
                 else
                 {
                     <td class="actionsColumn">
-                        @Html.ActionLink("Finish", "Finish", new
-                   {
-                       id = item.Id
-                   })<br />
-                        @Html.ActionLink(BoxingResources.Edit, "Edit", new
-                   {
-                       id = item.Id
-                   })<br />
-                        @Html.ActionLink(BoxingResources.Delete, "Delete", new
-                   {
-                       id = item.Id
-                   })
+                        @if ((item.Time - DateTime.MaxValue).Days == 0) // Then it's cancelled
+                        {
+                            <text><span style="font-weight:bold;color:#800;">Cancelled</span></text>
+                        }
+                        else if (item.WinnerId != null) // Then it's finished
+                        {
+                            <text><span style="font-weight:bold;color:#080;">Finished. Winner: @winner</span></text>
+                        }
+                        else
+                        {
+
+                            @Html.ActionLink("Finish", "Finish", new
+                       {
+                           id = item.Id
+                       })
+                            <br />
+                            @Html.ActionLink(BoxingResources.Edit, "Edit", new
+                       {
+                           id = item.Id
+                       })
+                            <br />
+                            @Html.ActionLink(BoxingResources.Delete, "Delete", new
+                       {
+                           id = item.Id
+                       }) <br />
+                            <a onclick="cancelMatchClicked(@item.Id);">Cancel</a>
+                        }
                     </td>
                 }
             </tr>
@@ -152,3 +170,20 @@
         </td>
     </tr>
 </table>
+
+<script type="text/javascript">
+    function cancelMatchClicked(matchId) {
+        debugger;
+        var oldUrl = window.location.href;
+        var newUrl = "@Url.Action("Cancel", "Matches")/" + matchId
+        if (confirm("Are you sure you want to cancel this match? You won't be able to undo the changes.")) {
+            $.ajax({
+                type: "POST",
+                url: newUrl,
+                success: function () {
+                    window.location.replace(oldUrl);
+                },
+            });
+        }
+    }
+</script>

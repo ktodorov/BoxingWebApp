@@ -4,60 +4,62 @@
 @{
     if (!AuthorizeExtensions.IsAuthenticated())
     {
-        Response.RedirectToRoute("~/Logins/Login?error=unauthorized");
+        throw new UnauthorizedAccessException();
     }
 
     if (!AuthorizeExtensions.CurrentUserIsAdmin())
     {
         Response.RedirectToRoute("~/Index");
     }
-
-    var boxers = new List<BoxingWebApp.ViewModels.BoxersListItem>();
-
-    var item = new BoxingWebApp.ViewModels.BoxersListItem();
-    item.Id = Model.Boxer1Id;
-    item.Name = Model.Boxer1.Name;
-    boxers.Add(item);
-
-    item = new BoxingWebApp.ViewModels.BoxersListItem();
-    item.Id = Model.Boxer2Id;
-    item.Name = Model.Boxer2.Name;
-    boxers.Add(item);
-
-    var boxersList = new SelectList(boxers, "Id", "Name", 1);
 }
 <h2 class="gridHeader">@ViewBag.Title</h2>
 
-@using (Html.BeginForm(null, null, FormMethod.Post, htmlAttributes: new { @class = "boxingForm" }))
+@if (Model.WinnerId != null)
 {
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <h4 class="pageSubHeader">
-            @(Model.Boxer1 != null ? Model.Boxer1.Name : string.Empty) vs @(Model.Boxer2 != null ? Model.Boxer2.Name : string.Empty), @Model.Address
-        </h4>
-
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.WinnerId, htmlAttributes: new { @class = "control-label col-md-2 boxingLabel formLabel" })
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.DropDownListFor(
-                model => model.WinnerId,
-                boxersList,
-                "-- Select --",
-                new { @class = "boxingDropDownList" }
-           )
-            @Html.ValidationMessageFor(x => x.WinnerId, "", new { @class = "text-danger formValidationMessage" })
-        </div>
-
-        <div class="formActionsDiv">
-            <input type="submit" value="Save" class="boxingButton" id="save-button" />
-            @Html.ActionLink(BoxingResources.Cancel, "Index", "Matches", null, new { @class = "boxingButton" })
+    <text>MATCH ALREADY FINISHED</text>
+}
+else
+{
+    <div class="centeredPanel buttonPanel">
+        Who will win?<br />
+        <div class="buttonWrapper">
+            @Html.ActionLink(Model.Boxer1.Name, "Finish", "Matches", null, new { @id = Model.Boxer1Id, @class = "boxingButton formButton" })
+            or
+            @Html.ActionLink(Model.Boxer2.Name, "Finish", "Matches", null, new { @id = Model.Boxer2Id, @class = "boxingButton formButton" })
         </div>
     </div>
 }
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(".formButton").click(function (e) {
+            e.preventDefault();
+            var id = @Model.Id;
+            var winnerId = $(this)[0].id;
+            var newUrl = updateQueryStringParameter(window.location.href, 'winnerId', winnerId);
+            $.ajax({
+                type: "POST",
+                url: newUrl,
+                success: function() {
+                    var url = window.location.href;
+                    var pos = url.lastIndexOf('/');
+                    if (pos != -1)
+                    {
+                        url = url.substr(0, pos);
+                    }
+                    pos = url.lastIndexOf('/');
+                    if (pos != -1)
+                    {
+                        url = url.substr(0, pos);
+                    }
+                    var newUrl = url + "/index";
+                    window.location.replace(newUrl);
+                },
+            });
+
+
+        });
+    </script>
 }

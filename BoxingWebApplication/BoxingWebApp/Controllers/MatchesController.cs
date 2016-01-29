@@ -218,7 +218,8 @@ namespace BoxingWebApp.Controllers
                 Boxer1Id = match.Boxer1Id,
                 Boxer1 = new BoxersListItem(match.Boxer1.Name),
                 Boxer2Id = match.Boxer2Id,
-                Boxer2 = new BoxersListItem(match.Boxer2.Name)
+                Boxer2 = new BoxersListItem(match.Boxer2.Name),
+                WinnerId = match.WinnerId
             };
 
             return View(model);
@@ -226,7 +227,7 @@ namespace BoxingWebApp.Controllers
 
         // POST: Matches/Finish/5
         [System.Web.Mvc.HttpPost]
-        public ActionResult Finish(int id, MatchesDetailsViewModel model)
+        public ActionResult Finish(int id, int winnerId)
         {
             try
             {
@@ -236,8 +237,8 @@ namespace BoxingWebApp.Controllers
                     {
                         var response = webClient.ExecutePut<object>(new Models.ApiRequest()
                         {
-                            EndPoint = $"matches/{model.Id}/finish",
-                            Request = model.WinnerId
+                            EndPoint = $"matches/{id}/finish",
+                            Request = winnerId
                         });
 
                         return RedirectToAction("Index");
@@ -246,18 +247,48 @@ namespace BoxingWebApp.Controllers
                     {
                         ModelState.AddModelError("generalError", e.Message);
 
-                        return View(model);
+                        return View();
                     }
                 }
 
-                return View(model);
+                return View();
             }
             catch
             {
-                return View(model);
+                return View();
             }
+        }
 
-            return View();
+        [System.Web.Mvc.HttpPost]
+        public ActionResult Cancel(int id)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        var response = webClient.ExecutePut<object>(new Models.ApiRequest()
+                        {
+                            EndPoint = $"matches/{id}/cancel",
+                        });
+
+                        return RedirectToAction("Index");
+                    }
+                    catch (Exception e)
+                    {
+                        ModelState.AddModelError("generalError", e.Message);
+
+                        return View();
+                    }
+                }
+
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }

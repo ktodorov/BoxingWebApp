@@ -266,6 +266,23 @@ h4.pageSubHeader {
     height: 35px;
 }
 
+.formButton {
+    padding: 10px 15% !important;
+}
+
+.buttonWrapper {
+    width: 100%;
+    text-align: center;
+    margin: 30px auto;
+}
+
+.buttonPanel {
+    width: 100%;
+    text-align: center;
+    padding: 50px !important;
+    margin-top: 100px !important;
+}
+
 .mainToolbar {
     margin: 0 10px;
 }
