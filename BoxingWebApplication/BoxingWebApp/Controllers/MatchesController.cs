@@ -62,7 +62,7 @@ namespace BoxingWebApp.Controllers
             var currentUser = AuthorizeExtensions.GetCurrentUser();
             var currentUserId = currentUser != null ? currentUser.Id : 0;
 
-            var predictions = webClient.ExecuteGet<IEnumerable<PredictionDto>>(new Models.ApiRequest() { EndPoint = "predictions?skip=0&take=10" })
+            var predictions = webClient.ExecuteGet<IEnumerable<PredictionDto>>(new Models.ApiRequest() { EndPoint = "predictions" })
                 ?.Select(q => new PredictionsListItem()
                 {
                     Id = q.Id,
@@ -90,7 +90,7 @@ namespace BoxingWebApp.Controllers
 
             ViewBag.Title = "Create";
 
-            var boxers = webClient.ExecuteGet<IEnumerable<BoxerDto>>(new Models.ApiRequest() { EndPoint = "boxers?skip=0&take=10" })
+            var boxers = webClient.ExecuteGet<IEnumerable<BoxerDto>>(new Models.ApiRequest() { EndPoint = "boxers" })
                ?.Select(q => new BoxersListItem() { Id = q.Id, Name = q.Name })?.ToList();
 
             if (boxers != null)
@@ -144,7 +144,7 @@ namespace BoxingWebApp.Controllers
 
             ViewBag.Title = "Edit";
 
-            var boxers = webClient.ExecuteGet<IEnumerable<BoxerDto>>(new Models.ApiRequest() { EndPoint = "boxers?skip=0&take=10" })
+            var boxers = webClient.ExecuteGet<IEnumerable<BoxerDto>>(new Models.ApiRequest() { EndPoint = "boxers" })
                ?.Select(q => new BoxersListItem() { Id = q.Id, Name = q.Name })?.ToList();
 
             if (boxers != null)

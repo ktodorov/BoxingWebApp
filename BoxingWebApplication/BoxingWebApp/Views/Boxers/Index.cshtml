@@ -3,10 +3,7 @@
 @{
     ViewBag.Title = "Index";
 
-    if (!AuthorizeExtensions.IsAuthenticated())
-    {
-        Response.RedirectToRoute("~/Logins/Login?error=unauthorized");
-    }
+    var userIsAdmin = AuthorizeExtensions.CurrentUserIsAdmin();
 }
 <h2 class="gridHeader">@BoxingResources.Boxers</h2>
 
@@ -17,20 +14,25 @@
             @BoxingResources.BoxersInfo
         </th>
     </tr>
-    <tr class="commandRow">
-        <td colspan="2">
-            @Html.ActionLink(BoxingResources.AddNew, "Create", null, new { @class = "boxingButton" })
-        </td>
-    </tr>
+    @if (userIsAdmin)
+    {
+        <tr class="commandRow">
+            <td colspan="2">
+                @Html.ActionLink(BoxingResources.AddNew, "Create", null, new { @class = "boxingButton" })
+            </td>
+        </tr>
+    }
     <tr>
         <td class="headerColumn">
             @BoxingResources.Boxer
         </td>
-        <td class="headerColumn">
-            @BoxingResources.Actions
-        </td>
+        @if (userIsAdmin)
+        {
+            <td class="headerColumn">
+                @BoxingResources.Actions
+            </td>
+        }
     </tr>
-    @*@if (Model.Items != null)*@
     @if (Model.Items != null)
     {
         foreach (var item in Model.Items)
@@ -39,10 +41,13 @@
                 <td class="displayColumn">
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                <td class="actionsColumn">
-                    @Html.ActionLink(BoxingResources.Edit, "Edit", new { id = item.Id })
-                    @Html.ActionLink(BoxingResources.Delete, "Delete", new { id = item.Id })
-                </td>
+                @if (userIsAdmin)
+                {
+                    <td class="actionsColumn">
+                        @Html.ActionLink(BoxingResources.Edit, "Edit", new { id = item.Id })
+                        @Html.ActionLink(BoxingResources.Delete, "Delete", new { id = item.Id })
+                    </td>
+                }
             </tr>
         }
     }
@@ -61,4 +66,3 @@
         </td>
     </tr>
 </table>
-

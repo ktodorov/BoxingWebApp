@@ -3,6 +3,7 @@ using Boxing.Contracts.Dto;
 using Boxing.Contracts.Requests.Boxers;
 using Boxing.Core.Handlers.Interfaces;
 using Boxing.Core.Sql;
+using Boxing.Core.Sql.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -23,12 +24,20 @@ namespace Boxing.Core.Handlers.Features.Boxers
 
         public async Task<IEnumerable<BoxerDto>> HandleAsync(GetAllBoxersRequest request)
         {
-            return (await _db.Boxers
-                .OrderBy(e => e.Id)
-                .Skip(request.Skip)
-                .Take(request.Take)
+            IQueryable<BoxerEntity> query = _db.Boxers.OrderBy(e => e.Id);
+
+            if (request.Take > 0)
+            {
+                query = query
+                        .Skip(request.Skip)
+                        .Take(request.Take);
+            }
+
+            var result = (await query
                 .ToListAsync()
                 .ConfigureAwait(false)).Select(Mapper.Map<BoxerDto>);
+
+            return result;
         }
     }
 }

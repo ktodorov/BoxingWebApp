@@ -3,6 +3,7 @@ using Boxing.Contracts.Dto;
 using Boxing.Contracts.Requests.Matches;
 using Boxing.Core.Handlers.Interfaces;
 using Boxing.Core.Sql;
+using Boxing.Core.Sql.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -40,6 +41,15 @@ namespace Boxing.Core.Handlers.Features.Matches
                 var currentTime = DateTime.Now;
                 dbSet = dbSet.Where(m => m.Time < currentTime &&
                                          m.WinnerId == null);
+            }
+
+            IQueryable<MatchEntity> query = dbSet.OrderBy(e => e.Time);
+
+            if (request.Take > 0)
+            {
+                query = query
+                    .Skip(request.Skip)
+                    .Take(request.Take);
             }
 
             var result = (await query

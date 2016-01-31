@@ -4,6 +4,7 @@ using Boxing.Contracts.Helpers.Users;
 using Boxing.Contracts.Requests.Users;
 using Boxing.Core.Handlers.Interfaces;
 using Boxing.Core.Sql;
+using Boxing.Core.Sql.Configurations;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Boxing.Core.Handlers.Features.Users
         public async Task<IEnumerable<UserDto>> HandleAsync(GetAllUsersRequest request)
         {
             var dbSet = _db.Users;
-            var query = dbSet.OrderBy(e => e.Id);
+            IQueryable<UserEntity> query = dbSet.OrderBy(e => e.Id);
 
             switch (request.Sort)
             {
@@ -41,11 +42,18 @@ namespace Boxing.Core.Handlers.Features.Users
                     break;
             }
 
-            return (await query
-                .Skip(request.Skip)
-                .Take(request.Take)
+            if (request.Take > 0)
+            {
+                query = query
+                    .Skip(request.Skip)
+                    .Take(request.Take);
+            }
+
+            var result = (await query
                 .ToListAsync()
                 .ConfigureAwait(false)).Select(Mapper.Map<UserDto>);
+
+            return result;
         }
     }
 }
