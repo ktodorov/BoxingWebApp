@@ -58,6 +58,11 @@ namespace Boxing.Core.Handlers.Features.Matches
                     }
                 }
 
+                if (matchEntity.WinnerId == userPredictions.FirstOrDefault(p => p.MatchId == matchEntity.Id)?.PredictedBoxerId)
+                {
+                    successfull++;
+                }
+
                 user.Rating = successfull / (double)currentUserPredictions.Count;
             }
 

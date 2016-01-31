@@ -23,7 +23,7 @@ namespace BoxingWebApp.Controllers
         {
             PredictionsListViewModel model = new PredictionsListViewModel();
 
-            model.Items = webClient.ExecuteGet<IEnumerable<PredictionDto>>(new Models.ApiRequest() { EndPoint = "predictions?skip=0&take=10" })
+            model.Items = webClient.ExecuteGet<IEnumerable<PredictionDto>>(new Models.ApiRequest() { EndPoint = "predictions" })
                 ?.Select(q => new PredictionsListItem()
                 {
                     Id = q.Id,
@@ -49,25 +49,15 @@ namespace BoxingWebApp.Controllers
                 return View();
             }
 
-            var matchListItem = new MatchesListItem()
-            {
-                Id = match.Id,
-                Address = match.Address,
-                Boxer1Id = match.Boxer1Id,
-                Boxer2Id = match.Boxer2Id
-            };
-
-            ViewData["Match"] = matchListItem;
-
             var currentUser = AuthorizeExtensions.GetCurrentUser();
             if (currentUser == null)
             {
-                return View();
+                throw new UnauthorizedAccessException();
             }
 
             model.UserId = currentUser.Id;
 
-            var prediction = webClient.ExecuteGet<IEnumerable<PredictionDto>>(new Models.ApiRequest() { EndPoint = "predictions?skip=0&take=10" })
+            var prediction = webClient.ExecuteGet<IEnumerable<PredictionDto>>(new Models.ApiRequest() { EndPoint = "predictions" })
                ?.Select(q => new PredictionsListItem() { Id = q.Id, UserId = q.UserId, MatchId = q.MatchId, PredictedBoxerId = q.PredictedBoxerId })?.
                  FirstOrDefault(p => p.MatchId == match.Id && p.UserId == currentUser.Id);
 
@@ -77,29 +67,30 @@ namespace BoxingWebApp.Controllers
                 model.PredictedBoxerId = prediction.PredictedBoxerId;
             }
 
-            var boxers = webClient.ExecuteGet<IEnumerable<BoxerDto>>(new Models.ApiRequest() { EndPoint = "boxers?skip=0&take=10" })
+            var boxers = webClient.ExecuteGet<IEnumerable<BoxerDto>>(new Models.ApiRequest() { EndPoint = "boxers" })
                ?.Select(q => new BoxersListItem() { Id = q.Id, Name = q.Name })?.Where(b => b.Id == match.Boxer1Id || b.Id == match.Boxer2Id)?.ToList();
 
-            if (boxers != null)
+            if (boxers != null && boxers.Count == 2)
             {
                 if (model.PredictedBoxerId != 0)
                 {
-                    SelectList list = new SelectList(boxers, "Id", "Name", model.PredictedBoxerId);
-                    ViewData["Boxers"] = list;
+                    ViewData["PredictedBoxer"] = boxers.FirstOrDefault(b => b.Id == model.PredictedBoxerId);
+                    var boxersList = new List<BoxersListItem>();
+                    if (model.PredictedBoxerId == match.Boxer1Id)
+                    {
+                        boxersList.Add(null);
+                    }
+                    boxersList.Add(boxers.FirstOrDefault(b => b.Id != model.PredictedBoxerId));
+                    if (model.PredictedBoxerId == match.Boxer2Id)
+                    {
+                        boxersList.Add(null);
+                    }
+                    ViewData["Boxers"] = boxersList;
                 }
                 else
                 {
-                    SelectList list = new SelectList(boxers, "Id", "Name", 1);
-                    ViewData["Boxers"] = list;
+                    ViewData["Boxers"] = boxers;
                 }
-            }
-
-            if (boxers.Count == 2)
-            {
-                matchListItem.Boxer1 = boxers.FirstOrDefault(b => b.Id == match.Boxer1Id);
-                matchListItem.Boxer2 = boxers.FirstOrDefault(b => b.Id == match.Boxer2Id);
-
-                ViewData["Match"] = matchListItem;
             }
 
             return View(model);
@@ -112,12 +103,26 @@ namespace BoxingWebApp.Controllers
             try
             {
                 var currentUser = AuthorizeExtensions.GetCurrentUser();
-                if (currentUser == null)
+                var match = webClient.ExecuteGet<MatchDto>(new Models.ApiRequest() { EndPoint = $"matches/{model.MatchId}" });
+                if (currentUser == null || match == null)
                 {
                     return View();
                 }
 
-                var prediction = webClient.ExecuteGet<IEnumerable<PredictionDto>>(new Models.ApiRequest() { EndPoint = "predictions?skip=0&take=10" })?.
+                if (Request.Form[match.Boxer1Id.ToString()] != null)
+                {
+                    model.PredictedBoxerId = match.Boxer1Id;
+                }
+                else if (Request.Form[match.Boxer2Id.ToString()] != null)
+                {
+                    model.PredictedBoxerId = match.Boxer2Id;
+                }
+                else
+                {
+                    return View();
+                }
+
+                var prediction = webClient.ExecuteGet<IEnumerable<PredictionDto>>(new Models.ApiRequest() { EndPoint = "predictions" })?.
                      FirstOrDefault(p => p.MatchId == model.MatchId && p.UserId == currentUser.Id);
 
                 if (prediction != null)
@@ -155,12 +160,12 @@ namespace BoxingWebApp.Controllers
             }
         }
 
-        // GET: Predictions/Delete/5
+        // DELETE: Predictions/Delete/5
         public ActionResult Delete(int id)
         {
             webClient.ExecuteDelete(new Models.ApiRequest() { EndPoint = string.Format("predictions/{0}", id) });
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", controllerName: "Matches");
         }
     }
 }

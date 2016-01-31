@@ -1,61 +1,50 @@
-﻿@using Boxing.Contracts.Resources
-
-@model BoxingWebApp.ViewModels.PredictionsDetailsViewModel
+﻿@model BoxingWebApp.ViewModels.PredictionsDetailsViewModel
 @{
     if (!AuthorizeExtensions.IsAuthenticated())
     {
-        Response.RedirectToRoute("~/Logins/Login?error=unauthorized");
+        throw new UnauthorizedAccessException();
     }
 
-    var boxers = ViewData["Boxers"] as SelectList;
-    var match = ViewData["Match"] as BoxingWebApp.ViewModels.MatchesListItem;
-
-    if (ViewData["Boxers1"] != null)
-    {
-        boxers = ViewData["BoxersSelected"] as SelectList;
-    }
+    var predictedBoxer = ViewData["PredictedBoxer"] as BoxingWebApp.ViewModels.BoxersListItem;
+    var boxers = ViewData["Boxers"] as List<BoxingWebApp.ViewModels.BoxersListItem>;
 }
 <h2 class="gridHeader">@ViewBag.Title</h2>
-
-@using (Html.BeginForm(null, null, FormMethod.Post, htmlAttributes: new { @class = "boxingForm" }))
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <h4 class="pageSubHeader">
-            @(match.Boxer1 != null ? match.Boxer1.Name : string.Empty) vs @(match.Boxer2 != null ? match.Boxer2.Name : string.Empty), @match.Address
-        </h4>
+<div class="centeredPanel buttonPanel">
+    Who will win?
+    @using (Html.BeginForm(null, null, FormMethod.Post, htmlAttributes: new { @class = "boxingForm" }))
+    {
+        @Html.AntiForgeryToken()
 
         @Html.HiddenFor(model => model.UserId)
         @Html.HiddenFor(model => model.MatchId)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.PredictedBoxerId, htmlAttributes: new { @class = "control-label col-md-2 boxingLabel formLabel" })
-            @if (boxers != null)
+        <div class="buttonWrapper">
+            @if (predictedBoxer != null)
             {
-
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                @Html.DropDownListFor(
-                model => model.PredictedBoxerId,
-                boxers,
-                "-- Select --",
-                new { @class = "boxingDropDownList" }
-           )
+                if (boxers.FirstOrDefault() != null)
+                {
+                    <input type="submit" value="@boxers.FirstOrDefault().Name" class="boxingButton" name="@boxers.FirstOrDefault().Id.ToString()" />
+                    <text>vs</text>
+                }
+                <input type="submit" value="@predictedBoxer.Name &#10004;" class="boxingButton boxingButton-selected" name="@predictedBoxer.Id.ToString()" />
+                if (boxers.LastOrDefault() != null)
+                {
+                    <text>vs</text>
+                    <input type="submit" value="@boxers.LastOrDefault().Name" class="boxingButton" name="@boxers.LastOrDefault().Id.ToString()" />
+                }
             }
             else
             {
-                <text>You must first add boxers</text>
+                <input type="submit" value="@boxers.FirstOrDefault().Name" class="boxingButton" name="@boxers.FirstOrDefault().Id.ToString()" />
+                <text>vs</text>
+                <input type="submit" value="@boxers.LastOrDefault().Name" class="boxingButton" name="@boxers.LastOrDefault().Id.ToString()" />
             }
-            @Html.ValidationMessageFor(x => x.PredictedBoxerId, "", new { @class = "text-danger formValidationMessage" })
         </div>
-
-        <div class="formActionsDiv">
-            <input type="submit" value="Save" class="boxingButton" id="save-button" />
-            @Html.ActionLink(BoxingResources.Cancel, "Index", "Matches", null, new { @class = "boxingButton" })
-        </div>
-    </div>
-}
-
+        <text>or</text>
+        <br /><br />
+        @Html.ActionLink("Cancel this prediction", "Delete", new { id = Model.Id }, new { @class = "boxingButton", onclick = "return confirm('Are you sure you want to cancel your prediction?')" })
+    }
+</div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
