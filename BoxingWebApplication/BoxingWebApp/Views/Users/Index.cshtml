@@ -4,15 +4,17 @@
 @{
     ViewBag.Title = "Index";
 
-    if (!AuthorizeExtensions.IsAuthenticated())
-    {
-        Response.RedirectToRoute("~/Logins/Login?error=unauthorized");
-    }
+    //if (!AuthorizeExtensions.IsAuthenticated())
+    //{
+    //    throw new UnauthorizedAccessException();
+    //}
 
     var sort = ViewData["Sort"] as string;
     var sortOrder = ViewData["Order"] as string;
     var page = (int?)ViewData["Page"] != null ? ((int?)ViewData["Page"] - 1) : 0;
     var pageSize = (int?)ViewData["PageSize"] ?? 10;
+
+    var userIsAdmin = AuthorizeExtensions.CurrentUserIsAdmin();
 }
 <h2 class="gridHeader">@BoxingResources.Users</h2>
 
@@ -38,10 +40,16 @@
                                   take = pageSize
                               })
         </td>
+        <td class="headerColumn">
+            @BoxingResources.Actions
+        </td>
     </tr>
-    @if (Model.Items != null)
+    @{
+        var items = Model.Items;
+    }
+    @if (items != null)
     {
-        foreach (var item in Model.Items)
+        foreach (var item in items)
         {
             <tr class="displayRow">
                 <td class="displayColumn">
@@ -51,7 +59,16 @@
                     @Html.DisplayFor(modelItem => item.FullName)
                 </td>
                 <td class="displayColumn">
-                    @Html.DisplayFor(modelItem => item.Rating)
+                    <span style="color: rgb(@(255*(1 - item.Rating)), @(255*item.Rating), 0) !important;">
+                        @(Convert.ToInt32(item.Rating * 100))%
+                    </span>
+                </td>
+                <td class="actionsColumn">
+                    @Html.ActionLink("Details", "Details", new { username = item.Username })
+                    @if (userIsAdmin)
+                    {
+                        @Html.ActionLink(BoxingResources.Delete, "Delete", "Users", new { id = item.Id }, new { onclick = "return confirm('Are you sure you want to delete this user?')" })
+                    }
                 </td>
             </tr>
         }

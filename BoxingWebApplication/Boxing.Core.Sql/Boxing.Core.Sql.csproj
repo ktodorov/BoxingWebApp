@@ -94,6 +94,10 @@
     <Compile Include="Migrations\201601201256522_AddMatchWinnerId.Designer.cs">
       <DependentUpon>201601201256522_AddMatchWinnerId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601311700576_AddedCascadeDeletesForUsers.cs" />
+    <Compile Include="Migrations\201601311700576_AddedCascadeDeletesForUsers.Designer.cs">
+      <DependentUpon>201601311700576_AddedCascadeDeletesForUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -107,6 +111,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601201256522_AddMatchWinnerId.resx">
       <DependentUpon>201601201256522_AddMatchWinnerId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601311700576_AddedCascadeDeletesForUsers.resx">
+      <DependentUpon>201601311700576_AddedCascadeDeletesForUsers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

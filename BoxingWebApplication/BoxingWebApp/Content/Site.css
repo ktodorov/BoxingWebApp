@@ -91,6 +91,16 @@ a.boxingButton {
     color: white;
 }
 
+.boxingButton-selected {
+    background: #385;
+    border: 3px solid #163;
+}
+
+.boxingButton-selected:hover {
+    background: #385;
+    border: 3px solid #163;
+}
+
 .boxingSubmitButton {
     width: 100%;
     max-width: 100%;
@@ -287,15 +297,36 @@ h4.pageSubHeader {
     margin: 0 10px;
 }
 
-.mainToolbar tr {
-    border: 0px !important;
-    padding: 0px !important;
-}
+    .mainToolbar tr {
+        border: 0px !important;
+        padding: 0px !important;
+    }
 
-.mainToolbar tr td {
-    border: 0px !important;
-    padding: 0 5px !important;
-}
+        .mainToolbar tr td {
+            border: 0px !important;
+            padding: 0 5px !important;
+        }
+
+            .mainToolbar tr td.additionalToolbarObjectTd {
+                border-left: 1px solid #252 !important;
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
+
+                .mainToolbar tr td.additionalToolbarObjectTd label {
+                    margin-right: 10px !important;
+                }
+
+    .mainToolbar label {
+        margin-bottom: 0px;
+    }
+
+    .mainToolbar input[type='checkbox'] {
+        width: 20px;
+        position: relative;
+        vertical-align: middle;
+        margin-top: 0px;
+    }
 
 .searchInput {
     width: 200px;
@@ -317,15 +348,15 @@ h4.pageSubHeader {
     -o-transform: rotate(-45deg);
 }
 
-.searchButton:visited {
-    color: #252;
-}
+    .searchButton:visited {
+        color: #252;
+    }
 
-.searchButton:hover {
-    background: none;
-    color: #030;
-    border: 0px;
-}
+    .searchButton:hover {
+        background: none;
+        color: #030;
+        border: 0px;
+    }
 
 .formLabel {
     float: left;
@@ -414,7 +445,6 @@ h4.pageSubHeader {
     width: 70px;
     height: 30px;
     margin: 0 5px;
-
     -webkit-appearance: none;
     -moz-appearance: none;
     -webkit-user-select: none;

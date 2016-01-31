@@ -85,6 +85,15 @@ namespace BoxingWebApp.Controllers
             return View(model);
         }
 
+
+        // GET: Users/Delete/5
+        public ActionResult Delete(int id)
+        {
+            webClient.ExecuteDelete(new Models.ApiRequest() { EndPoint = string.Format("users/{0}", id) });
+
+            return RedirectToAction("Index");
+        }
+
         public ActionResult Register()
         {
             ViewBag.Title = "Register";

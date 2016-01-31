@@ -9,7 +9,7 @@ namespace Boxing.Core.Sql.Configurations
         {
             ToTable("Login");
             Property(e => e.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            HasRequired(e => e.User).WithMany().HasForeignKey(e => e.UserId).WillCascadeOnDelete(false);
+            HasRequired(e => e.User).WithMany().HasForeignKey(e => e.UserId).WillCascadeOnDelete(true);
             Property(e => e.ExpirationDate).IsRequired();
             Property(e => e.AuthToken).IsRequired();
         }
