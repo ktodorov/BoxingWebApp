@@ -19,6 +19,14 @@
 
     var page = (int?)ViewData["Page"] != null ? ((int?)ViewData["Page"] - 1) : 0;
     var pageSize = (int?)ViewData["PageSize"] ?? 10;
+
+    var paramsDictionary = new Dictionary<string, object>();
+    var pastUnfinished = false;
+    if (userIsAdmin && ViewData["PastUnfinished"] != null)
+    {
+        paramsDictionary.Add("pastUnfinished", (bool)ViewData["PastUnfinished"]);
+        pastUnfinished = (bool)ViewData["PastUnfinished"];
+    }
 }
 <h2 class="gridHeader">@BoxingResources.Matches</h2>
 
@@ -31,7 +39,15 @@
     </tr>
     <tr class="commandRow">
         <td colspan="5">
-            @Html.MainToolbar(searchable: true, searchString: ViewData["SearchString"] as string)
+            @if (userIsAdmin)
+            {
+                var pastUnfinishedCheckbox = Html.CheckBox("PastUnfinished", pastUnfinished, new { onclick = "pastUnfinishedCheckboxClick(this);" });
+                var tuple = new Tuple<MvcHtmlString, string, string>(pastUnfinishedCheckbox, "PastUnfinished", "Only past unfinished");
+                @Html.MainToolbar(searchable: true, searchString: ViewData["SearchString"] as string, additionalObjects: tuple)
+            }
+            else {
+                @Html.MainToolbar(searchable: true, searchString: ViewData["SearchString"] as string)
+            }
         </td>
     </tr>
     <tr>
@@ -88,7 +104,14 @@
                     @Html.DisplayFor(modelItem => item.Address)
                 </td>
                 <td class="displayColumn">
-                    @item.Time.ToString("dd/MM/yyyy, HH:mm")
+                    @if ((item.Time - DateTime.MaxValue).Minutes == 0)
+                    {
+                        <text>-</text>
+                    }
+                    else
+                    {
+                        @item.Time.ToString("dd/MM/yyyy, HH:mm")
+                    }
                 </td>
                 <td class="displayColumn">
                     @Html.DisplayFor(modelItem => item.Description)
@@ -106,9 +129,17 @@
                         }
                         text = "Predicted: " + boxer.Name;
                     }
+                    else if (winner != null)
+                    {
+                        text = "Finished";
+                    }
 
                     <td class="displayColumn">
-                        @if (winner == null)
+                        @if ((item.Time - DateTime.MaxValue).Days == 0)
+                        {
+                            <text><span style="font-weight:bold;color:#800;">Cancelled</span></text>
+                        }
+                        else if (winner == null)
                         {
                             @Html.ActionLink(text, "Predict",
                                              controllerName: "Predictions",
@@ -140,16 +171,7 @@
                            id = item.Id
                        })
                             <br />
-                            @Html.ActionLink(BoxingResources.Edit, "Edit", new
-                       {
-                           id = item.Id
-                       })
-                            <br />
-                            @Html.ActionLink(BoxingResources.Delete, "Delete", new
-                       {
-                           id = item.Id
-                       }) <br />
-                            <a onclick="cancelMatchClicked(@item.Id);">Cancel</a>
+                            @Html.ActionLink("Cancel", null, null, htmlAttributes: new { onclick = "cancelMatchClicked(" + item.Id + ");" })
                         }
                     </td>
                 }
@@ -166,7 +188,7 @@
     }
     <tr class="pagerTr">
         <td class="pagerTd" colspan="2">
-            @Html.Pager("matches", (int?)ViewData["Page"], (int?)ViewData["PageSize"], search: (string)ViewData["SearchString"])
+            @Html.Pager("matches", (int?)ViewData["Page"], (int?)ViewData["PageSize"], search: (string)ViewData["SearchString"], otherQueryParams: paramsDictionary)
         </td>
     </tr>
 </table>
@@ -185,5 +207,11 @@
                 },
             });
         }
+    }
+
+    function pastUnfinishedCheckboxClick(checkbox) {
+        debugger;
+        var newUrl = updateQueryStringParameter(window.location.href, "pastUnfinished", checkbox.checked);
+        window.location.replace(newUrl)
     }
 </script>

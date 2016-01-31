@@ -22,8 +22,13 @@ namespace BoxingWebApp.Controllers
         }
 
         // GET: Matches
-        public ActionResult Index([FromUri] int skip = 0, [FromUri] int take = 10, [FromUri] string search = null)
+        public ActionResult Index([FromUri] int skip = 0, [FromUri] int take = 10, [FromUri] string search = null, [FromUri] bool? pastUnfinished = null)
         {
+            if (pastUnfinished.HasValue && pastUnfinished.Value && !AuthorizeExtensions.CurrentUserIsAdmin())
+            {
+                throw new UnauthorizedAccessException();
+            }
+
             MatchesListViewModel model = new MatchesListViewModel();
 
             var searchQueryParam = string.Empty;
@@ -33,7 +38,14 @@ namespace BoxingWebApp.Controllers
                 ViewData["SearchString"] = search;
             }
 
-            model.Items = webClient.ExecuteGet<IEnumerable<MatchDto>>(new Models.ApiRequest() { EndPoint = $"matches?skip={skip}&take={take}{searchQueryParam}" })
+            var pastUnfinishedQueryParam = string.Empty;
+            if (pastUnfinished.HasValue)
+            {
+                pastUnfinishedQueryParam = $"&pastUnfinished={pastUnfinished.Value}";
+                ViewData["PastUnfinished"] = pastUnfinished.Value;
+            }
+
+            model.Items = webClient.ExecuteGet<IEnumerable<MatchDto>>(new Models.ApiRequest() { EndPoint = $"matches?skip={skip}&take={take}{searchQueryParam}{pastUnfinishedQueryParam}" })
             ?.Select(q => new MatchesListItem()
             {
                 Id = q.Id,

@@ -14,5 +14,7 @@ namespace Boxing.Contracts.Requests.Matches
         public int Take { get; set; }
 
         public string Search { get; set; }
+
+        public bool? PastUnfinished { get; set; }
     }
 }

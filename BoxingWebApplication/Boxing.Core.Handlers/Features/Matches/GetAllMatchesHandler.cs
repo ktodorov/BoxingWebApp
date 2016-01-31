@@ -35,12 +35,18 @@ namespace Boxing.Core.Handlers.Features.Matches
                                          m.Address.Contains(request.Search));
             }
 
-            return (await dbSet
-                .OrderBy(e => e.Time)
-                .Skip(request.Skip)
-                .Take(request.Take)
+            if (request.PastUnfinished.HasValue && request.PastUnfinished.Value)
+            {
+                var currentTime = DateTime.Now;
+                dbSet = dbSet.Where(m => m.Time < currentTime &&
+                                         m.WinnerId == null);
+            }
+
+            var result = (await query
                 .ToListAsync()
                 .ConfigureAwait(false)).Select(Mapper.Map<MatchDto>);
+
+            return result;
         }
     }
 }

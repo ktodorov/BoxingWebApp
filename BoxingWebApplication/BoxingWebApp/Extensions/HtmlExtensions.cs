@@ -1,14 +1,29 @@
 ﻿using Boxing.Contracts.Resources;
 using BoxingWebApp.Services;
+using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using System.Web.Routing;
 
 namespace BoxingWebApp.Extensions
 {
     public static class HtmlExtensions
     {
-        public static IHtmlString MainToolbar(this HtmlHelper helper, bool addable = true, bool searchable = false, string searchString = null)
+        /// <summary>
+        /// This extension generates html string for the main toolbar in the grid
+        /// </summary>
+        /// <param name="helper"></param>
+        /// <param name="addable"></param>
+        /// <param name="searchable"></param>
+        /// <param name="searchString"></param>
+        /// <param name="additionalObjects">The first element is the mvc html string for the control to create, 
+        /// the second is the id of this control and the third is the text in the label we are supposed to create for this control.
+        /// If second and third are empty, we only create the mvc control without label</param>
+        /// <returns></returns>
+        public static IHtmlString MainToolbar(this HtmlHelper helper, bool addable = true, bool searchable = false, string searchString = null,
+                                              params Tuple<MvcHtmlString, string, string>[] additionalObjects)
         {
             var userIsAdmin = AuthorizeExtensions.CurrentUserIsAdmin();
 
@@ -30,12 +45,28 @@ namespace BoxingWebApp.Extensions
                 htmlText += "</td>";
             }
 
+            if (additionalObjects != null)
+            {
+                foreach (var htmlObject in additionalObjects)
+                {
+                    htmlText += "<td class='additionalToolbarObjectTd'>";
+                    // Then we should add label for the html object
+                    if (!string.IsNullOrEmpty(htmlObject.Item2) && !string.IsNullOrEmpty(htmlObject.Item3))
+                    {
+                        htmlText += "<label for='" + htmlObject.Item2 + "'>" + htmlObject.Item3 + "</label>";
+                    }
+                    htmlText += htmlObject.Item1;
+                    htmlText += "</td>";
+                }
+            }
+
             htmlText += "</tr></table>";
 
             return MvcHtmlString.Create(htmlText);
         }
 
-        public static IHtmlString Pager(this HtmlHelper helper, string model, int? page, int? pageSize, string sort = null, string order = null, string search = null)
+        public static IHtmlString Pager(this HtmlHelper helper, string model, int? page, int? pageSize, string sort = null, string order = null, string search = null,
+                                        Dictionary<string, object> otherQueryParams = null)
         {
             var webClient = new WebClientService(new ConfigurationService());
             var count = webClient.ExecuteGet<int>(new Models.ApiRequest() { EndPoint = $"count?model={model}" });
@@ -60,7 +91,7 @@ namespace BoxingWebApp.Extensions
                 else
                 {
                     htmlText += "<li>";
-                    var routeValues = CreateRouteValues(i, page, pageSize, sort, order, search);
+                    var routeValues = CreateRouteValues(i, pageSize, sort, order, search, otherQueryParams);
                     htmlText += helper.ActionLink((i + 1).ToString(), "Index", routeValues).ToString();
                 }
                 htmlText += "</li>";
@@ -79,49 +110,36 @@ namespace BoxingWebApp.Extensions
             return MvcHtmlString.Create(htmlText);
         }
 
-        private static object CreateRouteValues(int count, int? page, int? pageSize, string sort = null, string order = null, string search = null)
+        private static RouteValueDictionary CreateRouteValues(int count, int? pageSize, string sort = null, string order = null, string search = null, Dictionary<string, object> otherQueryParams = null)
         {
-            object routeValues;
-            if (!string.IsNullOrEmpty(sort) && !string.IsNullOrEmpty(order) && !string.IsNullOrEmpty(search))
+            var routeValues = new Dictionary<string, object>();
+
+            routeValues.Add("skip", (pageSize ?? 0) * count);
+            routeValues.Add("take", (pageSize ?? 0));
+
+            if (!string.IsNullOrEmpty(sort))
             {
-                routeValues = new
-                {
-                    skip = (pageSize ?? 0) * count,
-                    take = (pageSize ?? 0),
-                    sort = sort,
-                    order = order,
-                    search = search
-                };
-            }
-            else if (!string.IsNullOrEmpty(sort) && !string.IsNullOrEmpty(order))
-            {
-                routeValues = new
-                {
-                    skip = (pageSize ?? 0) * count,
-                    take = (pageSize ?? 0),
-                    sort = sort,
-                    order = order,
-                };
-            }
-            else if (!string.IsNullOrEmpty(search))
-            {
-                routeValues = new
-                {
-                    skip = (pageSize ?? 0) * count,
-                    take = (pageSize ?? 0),
-                    search = search
-                };
-            }
-            else
-            {
-                routeValues = new
-                {
-                    skip = (pageSize ?? 0) * count,
-                    take = (pageSize ?? 0)
-                };
+                routeValues.Add("sort", sort);
             }
 
-            return routeValues;
+            if (!string.IsNullOrEmpty(order))
+            {
+                routeValues.Add("order", order);
+            }
+            if (!string.IsNullOrEmpty(search))
+            {
+                routeValues.Add("search", search);
+            }
+
+            if (otherQueryParams != null)
+            {
+                foreach (var queryParam in otherQueryParams)
+                {
+                    routeValues.Add(queryParam.Key, queryParam.Value);
+                }
+            }
+
+            return new RouteValueDictionary(routeValues);
         }
 
     }
