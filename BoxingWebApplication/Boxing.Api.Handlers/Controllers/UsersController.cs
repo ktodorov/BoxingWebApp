@@ -28,11 +28,12 @@ namespace Boxing.Api.Handlers.Controllers
         }
 
         [HttpGet]
-        public async Task<UserDto> Get([FromUri] int id)
+        [Route("api/users/details/{username}")]
+        public async Task<UserDto> Details(string username)
         {
             var request = new GetUserRequest
             {
-                Id = id
+                Username = username
             };
             return await _mediator.ExecuteAsync(request).ConfigureAwait(false);
         }

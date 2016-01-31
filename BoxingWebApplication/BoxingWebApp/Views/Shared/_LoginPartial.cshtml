@@ -5,7 +5,6 @@
 @if (AuthorizeExtensions.IsAuthenticated())
 {
 
-        var currentUser = AuthorizeExtensions.GetCurrentUser();
         using (Html.BeginForm(BoxingResources.Logout, "Users", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
         {
         @Html.AntiForgeryToken()
@@ -14,7 +13,7 @@
             <li>
             <li>
                 @Html.ActionLink("Hello, " + Session["UserName"], "Details", "Users",
-                             routeValues: new { id = currentUser != null ? currentUser.Id : 0 }, 
+                             routeValues: new { username = Session["UserName"] }, 
                              htmlAttributes: null)
             </li>
             <li style="margin-right: 20px;">@Html.ActionLink(BoxingResources.Logout, "Logout", "Logins")</li>

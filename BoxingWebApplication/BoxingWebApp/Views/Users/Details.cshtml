@@ -1,16 +1,4 @@
 ﻿@model BoxingWebApp.ViewModels.UsersDetailsViewModel
-@{
-    if (!AuthorizeExtensions.IsAuthenticated())
-    {
-        throw new UnauthorizedAccessException();
-    }
-
-    //var currentUser = AuthorizeExtensions.GetCurrentUser();
-    //if (Model.Id != (currentUser != null ? currentUser.Id : 0))
-    //{
-    //    Response.RedirectToRoute("~/Index");
-    //}
-}
 <h2 class="gridHeader">User</h2>
 
 <div class="objectDetails">
@@ -26,7 +14,7 @@
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Rating, new { @class = "col-md-2 control-label boxingLabel" })
-        <span class="displaySpan">@Html.DisplayTextFor(m => m.Rating)</span>
+        <span class="displaySpan"style="color: rgb(@(255*(1 - Model.Rating)), @(255*Model.Rating), 0) !important;">@(Convert.ToInt32(Model.Rating * 100))%</span>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.IsAdmin, new { @class = "col-md-2 control-label boxingLabel" })

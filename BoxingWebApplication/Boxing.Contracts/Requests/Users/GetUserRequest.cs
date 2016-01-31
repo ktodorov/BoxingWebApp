@@ -9,6 +9,6 @@ namespace Boxing.Contracts.Requests.Users
 {
     public class GetUserRequest : IRequest<UserDto>
     {
-        public int Id { get; set; }
+        public string Username { get; set; }
     }
 }

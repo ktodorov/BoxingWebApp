@@ -6,6 +6,7 @@ using Boxing.Core.Handlers.Exceptions;
 using Boxing.Core.Handlers.Interfaces;
 using Boxing.Core.Sql;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Boxing.Core.Handlers.Features.Users
 {
@@ -20,7 +21,7 @@ namespace Boxing.Core.Handlers.Features.Users
 
         public async Task<UserDto> HandleAsync(GetUserRequest request)
         {
-            var boxer = await _db.Users.FindAsync(request.Id).ConfigureAwait(false);
+            var boxer = _db.Users.FirstOrDefault(u => u.Username == request.Username);
 
             if (boxer == null)
                 throw new NotFoundException();

@@ -65,9 +65,9 @@ namespace BoxingWebApp.Controllers
         }
 
         // GET: Users/Details/5
-        public ActionResult Details([FromUri] int id)
+        public ActionResult Details([FromUri] string username)
         {
-            var user = webClient.ExecuteGet<UserDto>(new Models.ApiRequest() { EndPoint = string.Format("users/{0}", id) });
+            var user = webClient.ExecuteGet<UserDto>(new Models.ApiRequest() { EndPoint = $"users/details/{username}" });
 
             var model = new UsersDetailsViewModel();
 
