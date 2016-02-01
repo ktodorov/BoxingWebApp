@@ -573,22 +573,36 @@ span.displaySpan {
 }
 
 .chatContainer {
-    width: 40%;
+    width: 70%;
     min-width: 500px;
     margin: 0px auto;
 }
 
     .chatContainer input {
-        display: inline-block;
-        line-height: normal;
-        height: 35px;
+        display: inline;
+    }
+
+    .chatContainer #messageWrapper {
+        width: 100%;
+        text-align:center;
+    }
+
+    .chatContainer #message {
+        width: 100%;
+        height: 42px;
+        text-align: left;
+    }
+
+    .chatContainer #sendmessage {
+        padding: 10px 47px !important;
+        margin: 0px !important;
     }
 
 .chatDiscussionUl {
-    height: 500px;
-    height: 60vh;
     overflow-y: auto;
-    border: 1px solid #252;
+    max-height:50vh;
+    border: 1px solid #ABA;
+    background: #F5F5F5;
     padding: 10px 20px;
 }
 
