@@ -9,7 +9,7 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    <script type="text/javascript"  src="~/Scripts/boxingScript.js"></script>
+    <script type="text/javascript" src="~/Scripts/boxingScript.js"></script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top boxingNavigation">
@@ -40,16 +40,9 @@
             @RenderBody()
         </div>
         <footer>
-            <table width="80%" style="margin: 0 auto;">
-                <tr>
-                    <td style="text-align: center;">&copy;@BoxingResources.ProjectTitle, @BoxingResources.AuthorName, @DateTime.Now.Year</td>
-                    <td style="text-align: center;">@BoxingResources.UniversityName</td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">@BoxingResources.SubjectName</td>
-                    <td style="text-align: center;">@BoxingResources.FacultyName</td>
-                </tr>
-            </table>
+            <span class="footerHeader">@BoxingResources.ProjectTitle, @BoxingResources.SubjectName</span>
+            <br/>
+            <span class="footerCopyrights">&copy;@BoxingResources.ProjectTitle, @BoxingResources.AuthorName, @DateTime.Now.Year, @BoxingResources.UniversityName, @BoxingResources.FacultyName</span>
         </footer>
     </div>
 
