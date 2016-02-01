@@ -36,6 +36,7 @@ textarea {
 
 .page-wrap {
     position: relative;
+    min-height: 500px;
 }
 
 footer {
@@ -574,7 +575,7 @@ span.displaySpan {
 
 .chatContainer {
     width: 70%;
-    min-width: 500px;
+    min-width: 350px;
     margin: 0px auto;
 }
 
@@ -584,7 +585,7 @@ span.displaySpan {
 
     .chatContainer #messageWrapper {
         width: 100%;
-        text-align:center;
+        text-align: center;
     }
 
     .chatContainer #message {
@@ -600,22 +601,41 @@ span.displaySpan {
 
 .chatDiscussionUl {
     overflow-y: auto;
-    max-height:50vh;
+    max-height: 50vh;
     border: 1px solid #ABA;
     background: #F5F5F5;
     padding: 10px 20px;
 }
 
-    .chatDiscussionUl li {
-        border: 1px solid #252;
-        width: 300px;
-        padding: 10px;
-        margin: 5px 0;
-        background: #585;
-        color: white;
-        border-radius: 100px 0 0 100px;
+    .chatDiscussionUl .message-wrapper {
+        width: 100%;
+        display: inline-block;
     }
 
-        .chatDiscussionUl li strong {
-            display: block;
-        }
+    .chatDiscussionUl .message-div {
+        width: 250px;
+        border: 1px solid #252;
+        word-wrap: break-word;
+        padding: 5px 10px;
+        color: white;
+        display: inline-block;
+    }
+
+    .chatDiscussionUl div.left {
+        float: left;
+        border-radius: 0px 20px 20px 20px;
+        background: #585;
+    }
+
+    .chatDiscussionUl div.right {
+        float: right;
+        border-radius: 20px 0px 20px 20px;
+        background: #464;
+    }
+
+    .chatDiscussionUl div div.message-header {
+        font-size: 11px;
+        font-style: italic;
+        text-align: right;
+        color: #9DB;
+    }

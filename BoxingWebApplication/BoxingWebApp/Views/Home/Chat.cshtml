@@ -6,13 +6,13 @@
 
     ViewBag.Title = "Chat";
 
-    var userName = Session["UserName"] + "   [" + DateTime.Now.ToString("dd/MM/yyyy HH:mm") + "]";
+    var userName = Session["UserName"];
 }
 
 <h2 class="gridHeader">Chat</h2>
 
 <div class="chatContainer">
-    <ul id="discussion" class="chatDiscussionUl"></ul>
+    <div id="discussion" class="chatDiscussionUl"></div>
     <table id="messageWrapper">
         <tr>
             <td width="90%">
@@ -33,10 +33,14 @@
             // Reference the auto-generated proxy for the hub.
             var chatHub = $.connection.chatHub;
             // Create a function that the hub can call back to display messages.
-            chatHub.client.addNewMessageToPage = function (name, message) {
+            chatHub.client.addNewMessageToPage = function (name, message, date) {
                 // Add the message to the page.
-                $('#discussion').append('<li><strong>' + htmlEncode(name)
-                    + '</strong>: ' + htmlEncode(message) + '</li>');
+                var classTitle = 'left';
+                if (name == '@userName') {
+                    classTitle = 'right';
+                }
+                $('#discussion').append("<div class='message-wrapper'><div class='message-div " + classTitle + "'><div class='message'>" + htmlEncode(message)
+                    + "</div><div class='message-header'>" + htmlEncode(name) + ', ' + htmlEncode(date) + '</div></div></div>');
             };
             // Set initial focus to message input box.
             $('#message').focus();

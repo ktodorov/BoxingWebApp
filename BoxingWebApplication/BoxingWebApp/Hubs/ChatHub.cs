@@ -7,6 +7,6 @@ public class ChatHub : Hub
     public void Send(string name, string message)
     {
         // Call the addNewMessageToPage method to update clients.
-        Clients.All.addNewMessageToPage(name, message);
+        Clients.All.addNewMessageToPage(name, message, DateTime.Now.ToString("HH:mm, dd/MM/yyyy"));
     }
 }
