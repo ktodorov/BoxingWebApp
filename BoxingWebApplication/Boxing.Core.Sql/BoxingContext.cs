@@ -11,8 +11,8 @@ namespace Boxing.Core.Sql
     public class BoxingContext : DbContext
     {
         public BoxingContext()
-            : base("User ID=sa;Password=123x456;Initial Catalog = BoxingApp; Server=KONSTANTIN-HP")
-        //: base("User ID=kztodorov;Password=X123x4567;Initial Catalog = boxing; Server=boxingserver.database.windows.net")
+            //: base("User ID=sa;Password=123x456;Initial Catalog = BoxingApp; Server=KONSTANTIN-HP")
+        : base("User ID=kztodorov;Password=X123x4567;Initial Catalog = boxing; Server=boxingserver.database.windows.net")
         {
             this.Configuration.LazyLoadingEnabled = false;
         }

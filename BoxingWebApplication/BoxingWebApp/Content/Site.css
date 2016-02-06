@@ -4,7 +4,7 @@
 }
 
 body {
-    padding-top: 50px;
+    padding-top: 33px;
     padding-bottom: 10px;
     margin-bottom: 120px;
 }
@@ -69,7 +69,6 @@ footer {
 
 .boxingNavigation {
     background: #FFF;
-    border-bottom: 1px solid #250;
     min-height: 0px;
     width: 100%;
     background: #333;
@@ -205,11 +204,10 @@ h2.pageHeader {
 }
 
 h2.gridHeader {
-    background: #252;
-    padding: 20px 40px 20px 40px;
-    margin: 30px 0 10px 0;
+    background: #5A7;
+    padding: 10px 40px 13px 40px;
     color: white;
-    font-size: 30px;
+    font-size: 25px;
     font-family: "Segoe UI";
     font-weight: bolder;
     text-transform: uppercase;
@@ -599,20 +597,21 @@ span.displaySpan {
         margin: 0px !important;
     }
 
-.chatDiscussionUl {
+.chatDiscussionWindow {
     overflow-y: auto;
-    max-height: 50vh;
+    max-height: 40vh;
     border: 1px solid #ABA;
     background: #F5F5F5;
     padding: 10px 20px;
+    margin-bottom: 10px;
 }
 
-    .chatDiscussionUl .message-wrapper {
+    .chatDiscussionWindow .message-wrapper {
         width: 100%;
         display: inline-block;
     }
 
-    .chatDiscussionUl .message-div {
+    .chatDiscussionWindow .message-div {
         width: 250px;
         border: 1px solid #252;
         word-wrap: break-word;
@@ -621,21 +620,83 @@ span.displaySpan {
         display: inline-block;
     }
 
-    .chatDiscussionUl div.left {
+    .chatDiscussionWindow div.left {
         float: left;
         border-radius: 0px 20px 20px 20px;
         background: #585;
     }
 
-    .chatDiscussionUl div.right {
+    .chatDiscussionWindow div.right {
         float: right;
         border-radius: 20px 0px 20px 20px;
         background: #464;
     }
 
-    .chatDiscussionUl div div.message-header {
+    .chatDiscussionWindow div div.message-header {
         font-size: 11px;
         font-style: italic;
         text-align: right;
         color: #9DB;
     }
+
+.onlineUsersWindow {
+    overflow-y: auto;
+    /*border: 1px solid #ABA;*/
+    /*background: #F5F5F5;*/
+    /*padding: 10px 20px;*/
+    margin-bottom: 10px;
+}
+
+.onlineUsersWindow h4, 
+.chatDiscussionWindow h4 {
+    margin: 0px;
+}
+
+.chatDiscussionWindow h4 {
+    margin-bottom: 10px;
+}
+
+.selectUsersWindow {
+    margin-top: 10px;
+    max-height: 65px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.selectUser {
+    display: inline-block;
+    background: #273;
+    color: white;
+    padding: 10px 15px;
+    margin: 0 5px;
+    border: 2px solid #273;
+}
+
+.selectUser:hover {
+    background: #263;
+    border-color: #263;
+    cursor: pointer;
+}
+
+.selectUser:active {
+    background: #152;
+    border-color: #152;
+}
+
+.selectedUser {
+    color: #152;
+    background: #FFF;
+    border-color: #152;
+}
+
+.selectedUser:hover {
+    background: #FFF;
+    border-color: #152;
+    cursor: default;
+}
+
+.selectedUser:active {
+    background: #FFF;
+    border-color: #152;
+}

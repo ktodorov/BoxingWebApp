@@ -1,16 +1,9 @@
 ﻿using Boxing.Contracts;
 using Boxing.Contracts.Dto;
-using Boxing.Contracts.Extensions;
 using BoxingWebApp.Services;
 using BoxingWebApp.ViewModels;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace BoxingWebApp.Extensions

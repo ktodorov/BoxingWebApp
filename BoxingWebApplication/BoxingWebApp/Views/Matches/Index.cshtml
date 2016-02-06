@@ -181,13 +181,13 @@
     else
     {
         <tr>
-            <td class="noObjectsRow" colspan="2">
+            <td class="noObjectsRow" colspan="5">
                 @BoxingResources.NoMatchesEntered
             </td>
         </tr>
     }
     <tr class="pagerTr">
-        <td class="pagerTd" colspan="2">
+        <td class="pagerTd" colspan="5">
             @Html.Pager("matches", (int?)ViewData["Page"], (int?)ViewData["PageSize"], search: (string)ViewData["SearchString"], otherQueryParams: paramsDictionary)
         </td>
     </tr>

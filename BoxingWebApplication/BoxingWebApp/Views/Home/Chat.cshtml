@@ -6,13 +6,24 @@
 
     ViewBag.Title = "Chat";
 
-    var userName = Session["UserName"];
+    var userName = Session["UserName"].ToString();
+
+    HttpContext.Current.Request.Cookies.Add(new HttpCookie("userName", userName.ToString()));
 }
 
 <h2 class="gridHeader">Chat</h2>
 
 <div class="chatContainer">
-    <div id="discussion" class="chatDiscussionUl"></div>
+    <div class="onlineUsersWindow">
+        <div id="onlineUsers" class="selectUsersWindow">
+            <div user="all" class="selectUser selectedUser">
+                All users
+            </div>
+        </div>
+    </div>
+    <div id="discussion" class="chatDiscussionWindow">
+        <h4>Discussion</h4>
+    </div>
     <table id="messageWrapper">
         <tr>
             <td width="90%">
@@ -25,6 +36,8 @@
     </table>
 </div>
 
+<input type="hidden" id="currentUserChat" value="all" />
+
 @section scripts {
     <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
     <script src="~/signalr/hubs" type="text/javascript"></script>
@@ -32,23 +45,75 @@
         $(function () {
             // Reference the auto-generated proxy for the hub.
             var chatHub = $.connection.chatHub;
-            // Create a function that the hub can call back to display messages.
-            chatHub.client.addNewMessageToPage = function (name, message, date) {
-                // Add the message to the page.
+
+            chatHub.client.addChatMessage = function (message, date, name, groupChat) {
+                var selectedUser = $('#currentUserChat').val();
+                debugger;
+                if ((groupChat && selectedUser != "all") || (!groupChat && selectedUser == "all")) {
+                    return;
+                }
+
                 var classTitle = 'left';
                 if (name == '@userName') {
                     classTitle = 'right';
                 }
+
                 $('#discussion').append("<div class='message-wrapper'><div class='message-div " + classTitle + "'><div class='message'>" + htmlEncode(message)
                     + "</div><div class='message-header'>" + htmlEncode(name) + ', ' + htmlEncode(date) + '</div></div></div>');
             };
+
+            chatHub.client.userConnected = function (userName) {
+                var selectThisUser = $("#selectUsersWindow div[user='" + userName + "'");
+                debugger;
+                //if (!selectThisUser) {
+                $('#onlineUsers').append('<div user="' + userName + '" class="selectUser">' + userName + '</div>');
+                //}
+            };
+
+            chatHub.client.userDisconnected = function (userName) {
+                var disconnectedUser = $('#onlineUsers').first().find('div[user="' + userName + '"]');
+                var selectedUser = $('#currentUserChat').val();
+                if (selectedUser == userName) {
+                    $('#discussion').append("<div class='message-wrapper'><div class='message-div left'><div class='message'>User disconnected</div></div></div>");
+                    $("#message").prop('disabled', true);
+                    $("#sendmessage").prop('disabled', true);
+                }
+
+                disconnectedUser.remove();
+            };
+
+            $(document).on('click', "div.selectUser", function () {
+                $('#discussion').empty();
+
+                var newUser = $(this).attr('user');
+                if (newUser == 'all') {
+                    $('#discussion').append("<h4>Group chat</h4>");
+                }
+                else {
+                    $('#discussion').append("<h4>Discussion with " + newUser + "</h4>");
+                }
+
+                $("#onlineUsers .selectUser").removeClass("selectedUser");
+                $(this).addClass("selectedUser");
+                $('#currentUserChat').val(newUser);
+                $("#message").prop('disabled', false);
+                $("#sendmessage").prop('disabled', false);
+            });
+
             // Set initial focus to message input box.
             $('#message').focus();
+
+            // we store the username so we can use it in the hub later
+            $.connection.hub.qs = { 'userName': '@userName' };
             // Start the connection.
             $.connection.hub.start().done(function () {
                 $('#sendmessage').click(function () {
+                    if (!$('#message').val()) {
+                        return;
+                    }
+                    var userToSend = $('#currentUserChat').val();
                     // Call the Send method on the hub.
-                    chatHub.server.send('@userName', $('#message').val());
+                    chatHub.server.sendChatMessage(userToSend, $('#message').val(), '@userName');
                     // Clear text box and reset focus for next comment.
                     $('#message').val('').focus();
                 });

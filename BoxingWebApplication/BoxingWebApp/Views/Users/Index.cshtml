@@ -76,13 +76,13 @@
     else
     {
         <tr>
-            <td class="noObjectsRow" colspan="2">
+            <td class="noObjectsRow" colspan="4">
                 @BoxingResources.NoUsersEntered
             </td>
         </tr>
     }
     <tr class="pagerTr">
-        <td class="pagerTd" colspan="2">
+        <td class="pagerTd" colspan="4">
             @Html.Pager("users", (int?)ViewData["Page"], (int?)ViewData["PageSize"], sort, sortOrder)
         </td>
     </tr>
