@@ -5,27 +5,21 @@
 }
 
 <div class="boxingHomeInfo">
-    <h1>@BoxingResources.ProjectTitle.ToUpper()</h1>
-    <p class="boxingHomeSubInfo">@BoxingResources.AppInfo</p>
+    <h1>WEB SESSIONS CHAT</h1>
+    <p class="boxingHomeSubInfo">Chat with other users individually or participate in the group chat</p>
 </div>
 
 <div class="navigationWrapper">
     <div class="boxingPanel usersPanel" onclick="window.location.href='@Url.Action("Index", "Users")'">
         <h2>@BoxingResources.RegisteredUsers</h2>
         <p>
-            @BoxingResources.UserInfo
+            See all registered chatters and choose who you're going to write to
         </p>
     </div>
-    <div class="boxingPanel matchesPanel" onclick="window.location.href='@Url.Action("Index", "Matches")'">
-        <h2>@BoxingResources.Matches</h2>
+    <div class="boxingPanel matchesPanel" onclick="window.location.href='@Url.Action("Chat", "Home")'">
+        <h2>Chats</h2>
         <p>
-            @BoxingResources.MatchesInfo
-        </p>
-    </div>
-    <div class="boxingPanel boxersPanel" onclick="window.location.href='@Url.Action("Index", "Boxers")'">
-        <h2>@BoxingResources.Boxers</h2>
-        <p>
-            @BoxingResources.BoxersInfo
+            Come, let's have a talk
         </p>
     </div>
 </div>
