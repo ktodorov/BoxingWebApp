@@ -345,25 +345,27 @@ h4.pageSubHeader {
 
 .mainToolbar {
     margin: 0 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
 }
 
-    .mainToolbar tr {
-        border: 0px !important;
-        padding: 0px !important;
-    }
+.mainToolbar div {
+    display: inline-block;
+    vertical-align: middle;
+}
 
-        .mainToolbar tr td {
-            border: 0px !important;
-            padding: 0 5px !important;
-        }
+.mainToolbar>div {
+    margin: 0 5px;
+}
 
-            .mainToolbar tr td.additionalToolbarObjectTd {
+            .mainToolbar div.additionalToolbarObjectTd {
                 border-left: 1px solid #252 !important;
                 padding-left: 10px !important;
                 padding-right: 10px !important;
             }
 
-                .mainToolbar tr td.additionalToolbarObjectTd label {
+                .mainToolbar div.additionalToolbarObjectTd label {
                     margin-right: 10px !important;
                 }
 
@@ -373,6 +375,7 @@ h4.pageSubHeader {
 
     .mainToolbar input[type='checkbox'] {
         width: 20px;
+        height: 20px;
         position: relative;
         vertical-align: middle;
         margin-top: 0px;

@@ -27,40 +27,39 @@ namespace BoxingWebApp.Extensions
         {
             var userIsAdmin = AuthorizeExtensions.CurrentUserIsAdmin();
 
-            var htmlText = "<table class='mainToolbar'><tr>";
+            var htmlText = "<div class='mainToolbar'>";
 
             if (userIsAdmin && addable)
             {
-                htmlText += "<td>";
+                htmlText += "<div>";
                 htmlText += helper.ActionLink(BoxingResources.AddNew, "Create", null, new { @class = "boxingButton" }).ToString();
-                htmlText += "</td>";
+                htmlText += "</div>";
             }
 
             if (searchable)
             {
-                htmlText += "<td>";
+                htmlText += "<div>";
                 htmlText += helper.TextBox("Search", searchString, htmlAttributes: new { @class = "form-control boxingInput searchInput" }).ToString();
-                htmlText += "</td><td>";
                 htmlText += helper.ActionLink("\u26B2", "", "", htmlAttributes: new { href = "javascript:void(0)", @class = "boxingButton searchButton" }).ToString();
-                htmlText += "</td>";
+                htmlText += "</div>";
             }
 
             if (additionalObjects != null)
             {
                 foreach (var htmlObject in additionalObjects)
                 {
-                    htmlText += "<td class='additionalToolbarObjectTd'>";
+                    htmlText += "<div class='additionalToolbarObjectTd'>";
                     // Then we should add label for the html object
                     if (!string.IsNullOrEmpty(htmlObject.Item2) && !string.IsNullOrEmpty(htmlObject.Item3))
                     {
                         htmlText += "<label for='" + htmlObject.Item2 + "'>" + htmlObject.Item3 + "</label>";
                     }
                     htmlText += htmlObject.Item1;
-                    htmlText += "</td>";
+                    htmlText += "</div>";
                 }
             }
 
-            htmlText += "</tr></table>";
+            htmlText += "</div>";
 
             return MvcHtmlString.Create(htmlText);
         }
