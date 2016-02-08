@@ -56,7 +56,7 @@ namespace BoxingWebApp.Controllers
                     var parsedLogin = existingLogin.ToObject<LoginDto>();
                     Session[Constants.Headers.AuthTokenHeader] = parsedLogin.AuthToken;
 
-                    var user = webClient.ExecuteGet<UserDto>(new Models.ApiRequest() { EndPoint = string.Format("users/{0}", parsedLogin.UserId) });
+                    var user = webClient.ExecuteGet<UserDto>(new Models.ApiRequest() { EndPoint = string.Format("users/details/{0}", model.Username) });
                     if (user != null && user.IsAdmin)
                     {
                         Session[Constants.Headers.AdminTokenHeader] = parsedLogin.AuthToken;

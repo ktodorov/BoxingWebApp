@@ -43,7 +43,7 @@
             {
                 var pastUnfinishedCheckbox = Html.CheckBox("PastUnfinished", pastUnfinished, new { onclick = "pastUnfinishedCheckboxClick(this);" });
                 var tuple = new Tuple<MvcHtmlString, string, string>(pastUnfinishedCheckbox, "PastUnfinished", "Only past unfinished");
-                @Html.MainToolbar(searchable: true, searchString: ViewData["SearchString"] as string, additionalObjects: tuple)
+                @Html.MainToolbar(addable: true, searchable: true, searchString: ViewData["SearchString"] as string, additionalObjects: tuple)
             }
             else {
                 @Html.MainToolbar(searchable: true, searchString: ViewData["SearchString"] as string)
