@@ -20,13 +20,15 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <span class="titleSpan">@Html.ActionLink("Web sessions chat", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })</span>
+                <span class="titleSpan">@Html.ActionLink(BoxingResources.ProjectTitle, "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })</span>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink(BoxingResources.Home, "Index", "Home")</li>
                     <li>@Html.ActionLink("Chat", "Chat", "Home")</li>
                     <li>@Html.ActionLink("Users", "Index", "Users")</li>
+                    <li>@Html.ActionLink(BoxingResources.Matches, "Index", "Matches")</li>
+                    <li>@Html.ActionLink(BoxingResources.Boxers, "Index", "Boxers")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -37,9 +39,9 @@
             @RenderBody()
         </div>
         <footer>
-            <span class="footerHeader">Web sessions chat, Introduction to developing cloud applications</span>
+            <span class="footerHeader">@BoxingResources.ProjectTitle, @BoxingResources.SubjectName</span>
             <br/>
-            <span class="footerCopyrights">&copy;Web sessions chat, @BoxingResources.AuthorName, @DateTime.Now.Year, @BoxingResources.UniversityName, @BoxingResources.FacultyName</span>
+            <span class="footerCopyrights">&copy;@BoxingResources.ProjectTitle, @BoxingResources.AuthorName, @DateTime.Now.Year, @BoxingResources.UniversityName, @BoxingResources.FacultyName</span>
         </footer>
     </div>
 
