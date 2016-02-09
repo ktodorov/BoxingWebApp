@@ -30,6 +30,7 @@ textarea {
 }
 
 .container {
+    width: 100%;
     max-width: 100%;
     padding: 0;
 }
@@ -228,8 +229,12 @@ h4.pageSubHeader {
     margin: 30px auto;
     border: 1px solid #252;
 }
+.gridTable tbody, .gridTable tr, .gridTable th, .gridTable td {
+    width: auto;
+}
 
     .gridTable th {
+        width: 100%;
         padding: 15px 10px;
         border-bottom: 1px solid #252;
         font-size: 17px;
@@ -350,24 +355,24 @@ h4.pageSubHeader {
     white-space: nowrap;
 }
 
-.mainToolbar div {
-    display: inline-block;
-    vertical-align: middle;
-}
+    .mainToolbar div {
+        display: inline-block;
+        vertical-align: middle;
+    }
 
-.mainToolbar>div {
-    margin: 0 5px;
-}
+    .mainToolbar > div {
+        margin: 0 5px;
+    }
 
-            .mainToolbar div.additionalToolbarObjectTd {
-                border-left: 1px solid #252 !important;
-                padding-left: 10px !important;
-                padding-right: 10px !important;
-            }
+    .mainToolbar div.additionalToolbarObjectTd {
+        border-left: 1px solid #252 !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
 
-                .mainToolbar div.additionalToolbarObjectTd label {
-                    margin-right: 10px !important;
-                }
+        .mainToolbar div.additionalToolbarObjectTd label {
+            margin-right: 10px !important;
+        }
 
     .mainToolbar label {
         margin-bottom: 0px;
@@ -650,10 +655,10 @@ span.displaySpan {
     margin-bottom: 10px;
 }
 
-.onlineUsersWindow h4, 
-.chatDiscussionWindow h4 {
-    margin: 0px;
-}
+    .onlineUsersWindow h4,
+    .chatDiscussionWindow h4 {
+        margin: 0px;
+    }
 
 .chatDiscussionWindow h4 {
     margin-bottom: 10px;
@@ -676,16 +681,16 @@ span.displaySpan {
     border: 2px solid #273;
 }
 
-.selectUser:hover {
-    background: #263;
-    border-color: #263;
-    cursor: pointer;
-}
+    .selectUser:hover {
+        background: #263;
+        border-color: #263;
+        cursor: pointer;
+    }
 
-.selectUser:active {
-    background: #152;
-    border-color: #152;
-}
+    .selectUser:active {
+        background: #152;
+        border-color: #152;
+    }
 
 .selectedUser {
     color: #152;
@@ -693,13 +698,17 @@ span.displaySpan {
     border-color: #152;
 }
 
-.selectedUser:hover {
-    background: #FFF;
-    border-color: #152;
-    cursor: default;
-}
+    .selectedUser:hover {
+        background: #FFF;
+        border-color: #152;
+        cursor: default;
+    }
 
-.selectedUser:active {
-    background: #FFF;
-    border-color: #152;
+    .selectedUser:active {
+        background: #FFF;
+        border-color: #152;
+    }
+
+.bootstrap-datetimepicker-widget {
+    color: #152;
 }

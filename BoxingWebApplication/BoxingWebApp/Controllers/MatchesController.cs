@@ -108,7 +108,7 @@ namespace BoxingWebApp.Controllers
         {
             try
             {
-                object exisctingTest = webClient.ExecutePost<object>(new Models.ApiRequest()
+                object newMatch = webClient.ExecutePost<object>(new Models.ApiRequest()
                 {
                     EndPoint = string.Format("matches"),
                     Request = new MatchDto()

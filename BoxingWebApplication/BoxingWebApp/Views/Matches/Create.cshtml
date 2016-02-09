@@ -19,6 +19,11 @@
     {
         boxers2 = ViewData["Boxers2"] as SelectList;
     }
+
+    //if (Model.Time <= DateTime.MinValue)
+    //{
+    //    Model.Time = DateTime.Now;
+    //}
 }
 <h2 class="gridHeader">@ViewBag.Title</h2>
 
@@ -78,7 +83,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Time, htmlAttributes: new { @class = "control-label col-md-2 boxingLabel formLabel" })
-            @Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control boxingInput formInput" } })
+            @Html.TextBoxFor(model => model.Time, new { @class = "form-control boxingInput formInput datetimepicker" })
             @Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger formValidationMessage" })
         </div>
 

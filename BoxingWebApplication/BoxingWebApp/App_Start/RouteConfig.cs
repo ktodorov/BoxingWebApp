@@ -15,14 +15,14 @@ namespace BoxingWebApp
 
             routes.MapRoute(
                 name: "UserDetails",
-                url: "{controller}/{action}/{username}",
+                url: "Users/Details/{username}",
                 defaults: new { controller = "Users", action = "Details", username = UrlParameter.Optional }
             );
 
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional, username = UrlParameter.Optional }
             );
         }
     }

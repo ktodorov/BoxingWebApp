@@ -36,3 +36,11 @@ $(function () {
         }
     });
 });
+
+$(function () {
+    $('.datetimepicker').datetimepicker({
+        format: 'DD/MM/YYYY, HH:mm',
+        useCurrent: true,
+        showTodayButton: true
+    });
+});
